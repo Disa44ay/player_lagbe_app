@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.playerlagbe;
 
 import org.junit.Test;
 
