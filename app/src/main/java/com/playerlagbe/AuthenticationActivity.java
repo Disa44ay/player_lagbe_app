@@ -11,7 +11,7 @@ public class AuthenticationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_authentication);
+        setContentView(R.layout._authentication);
 
         Button loginButton = findViewById(R.id.btn_login);
         Button signupButton = findViewById(R.id.btn_signup);
