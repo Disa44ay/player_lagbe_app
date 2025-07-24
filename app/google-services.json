@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "590655616431",
+    "project_id": "player-lagbe-app",
+    "storage_bucket": "player-lagbe-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:590655616431:android:50bfd76371b7ad06e3eb5a",
+        "android_client_info": {
+          "package_name": "com.playerlagbe"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "590655616431-abcdefghijklmnopqrstuvwxyz123456.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.playerlagbe",
+            "certificate_hash": "sha1_placeholder"
+          }
+        },
+        {
+          "client_id": "590655616431-webdefghijklmnopqrstuvwxyz78901.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBG_yt7R1sjNL3-ocokQ3LEWE7AdxmIkKc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "590655616431-webdefghijklmnopqrstuvwxyz78901.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
