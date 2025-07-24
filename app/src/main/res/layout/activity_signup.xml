@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="?android:attr/colorBackground"
     android:padding="24dp">
 
     <LinearLayout
@@ -19,7 +19,7 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Back"
             android:src="?attr/homeAsUpIndicator"
-            android:tint="#D32F2F" />
+            android:tint="?attr/colorPrimary" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:text="Sign Up"
                 android:textSize="28sp"
-                android:textColor="#D32F2F"
+                android:textColor="?attr/colorPrimary"
                 android:textStyle="bold"
                 android:layout_marginBottom="32dp" />
 
@@ -44,9 +44,8 @@
                 android:layout_height="wrap_content"
                 android:hint="Username"
                 android:inputType="textPersonName"
-                android:backgroundTint="#D32F2F"
-                android:padding="12dp"
-                android:layout_marginBottom="16dp" />
+                android:layout_marginBottom="16dp"
+                android:contentDescription="Enter your username" />
 
             <EditText
                 android:id="@+id/et_email"
@@ -54,9 +53,8 @@
                 android:layout_height="wrap_content"
                 android:hint="Email"
                 android:inputType="textEmailAddress"
-                android:backgroundTint="#D32F2F"
-                android:padding="12dp"
-                android:layout_marginBottom="16dp" />
+                android:layout_marginBottom="16dp"
+                android:contentDescription="Enter your email address" />
 
             <EditText
                 android:id="@+id/et_password"
@@ -64,9 +62,8 @@
                 android:layout_height="wrap_content"
                 android:hint="Password"
                 android:inputType="textPassword"
-                android:backgroundTint="#D32F2F"
-                android:padding="12dp"
-                android:layout_marginBottom="16dp" />
+                android:layout_marginBottom="16dp"
+                android:contentDescription="Enter your password" />
 
             <EditText
                 android:id="@+id/et_confirm_password"
@@ -74,17 +71,16 @@
                 android:layout_height="wrap_content"
                 android:hint="Confirm Password"
                 android:inputType="textPassword"
-                android:backgroundTint="#D32F2F"
-                android:padding="12dp"
-                android:layout_marginBottom="24dp" />
+                android:layout_marginBottom="24dp"
+                android:contentDescription="Confirm your password" />
 
             <Button
                 android:id="@+id/btn_signup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Sign Up"
-                android:backgroundTint="#D32F2F"
-                android:textColor="#FFFFFF"
+                android:backgroundTint="?attr/colorPrimary"
+                android:textColor="?attr/colorOnPrimary"
                 android:layout_marginBottom="16dp" />
         </LinearLayout>
     </LinearLayout>

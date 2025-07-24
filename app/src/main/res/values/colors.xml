@@ -7,4 +7,18 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    
+    <!-- Accessibility colors for input fields -->
+    <color name="input_text_color_light">#FF212121</color>
+    <color name="input_text_color_dark">#FFFFFFFF</color>
+    <color name="input_hint_color_light">#FF757575</color>
+    <color name="input_hint_color_dark">#FFBDBDBD</color>
+    <color name="input_border_color_light">#FF757575</color>
+    <color name="input_border_color_dark">#FFBDBDBD</color>
+    <color name="input_background_light">#FFFFFFFF</color>
+    <color name="input_background_dark">#FF424242</color>
+    
+    <!-- Brand colors -->
+    <color name="brand_primary">#FFD32F2F</color>
+    <color name="brand_primary_variant">#FF9A0007</color>
 </resources>
