@@ -1,44 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:padding="16dp">
+    android:background="#FFFFFF"
+    tools:context=".AuthenticationActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Player Lagbe"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="32dp" />
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:gravity="center_horizontal">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Choose an option:"
-        android:textSize="16sp"
-        android:layout_marginBottom="24dp" />
+        <!-- App Logo Placeholder -->
+        <ImageView
+            android:id="@+id/appLogo"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/ic_launcher_foreground"
+            android:layout_marginBottom="24dp" />
 
-    <Button
-        android:id="@+id/btn_login"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:text="Login"
-        android:layout_marginBottom="16dp" />
+        <!-- Email Field -->
+        <EditText
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Email or Username"
+            android:inputType="textEmailAddress"
+            android:padding="12dp"
+            android:background="@android:drawable/edit_text"
+            android:layout_marginBottom="16dp" />
 
-    <Button
-        android:id="@+id/btn_signup"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:text="Sign Up"
-        android:layout_marginBottom="16dp" />
+        <!-- Password Field -->
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:padding="12dp"
+            android:background="@android:drawable/edit_text"
+            android:layout_marginBottom="16dp" />
 
-    <Button
-        android:id="@+id/btn_forgot_password"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:text="Forgot Password" />
+        <!-- Role Selection (Radio Buttons) -->
+        <RadioGroup
+            android:id="@+id/roleGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp"
+            android:gravity="center">
 
-</LinearLayout>
+            <RadioButton
+                android:id="@+id/radioUser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="User"
+                android:checked="true"
+                android:textColor="#000" />
+
+            <RadioButton
+                android:id="@+id/radioAdmin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Admin"
+                android:layout_marginStart="32dp"
+                android:textColor="#000" />
+        </RadioGroup>
+
+        <!-- Login Button -->
+        <Button
+            android:id="@+id/loginButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Login"
+            android:backgroundTint="#D32F2F"
+            android:textColor="#FFF"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Google Sign In -->
+        <Button
+            android:id="@+id/googleSignIn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sign in with Google"
+            android:backgroundTint="#4285F4"
+            android:textColor="#FFF"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Forgot Password -->
+        <TextView
+            android:id="@+id/forgotPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Forgot Password?"
+            android:textColor="#D32F2F"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Signup Redirect -->
+        <TextView
+            android:id="@+id/signupRedirect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Don't have an account? Sign up"
+            android:textColor="#000"
+            android:textStyle="italic"
+            android:layout_gravity="center" />
+
+    </LinearLayout>
+</ScrollView>
