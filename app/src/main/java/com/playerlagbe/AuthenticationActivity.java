@@ -13,13 +13,24 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseUser;
 
 /**
  * Authentication Activity using Firebase Auth
- * Supports email/password login and Google Sign-In
+ * 
+ * This activity provides:
+ * - Email/Password login with comprehensive validation
+ * - Username-based login (automatically resolves to email)
+ * - Google Sign-In integration with proper error handling
+ * - Role selection (User/Admin)
+ * - Automatic user session management
+ * - Responsive UI with loading indicators
+ * 
+ * The activity automatically redirects authenticated users to MainActivity
+ * and provides seamless navigation to signup and password reset screens.
  */
 public class AuthenticationActivity extends AppCompatActivity {
 
@@ -117,9 +128,15 @@ public class AuthenticationActivity extends AppCompatActivity {
             return;
         }
 
-        // For username login, don't validate email format
+        // For email login, validate email format
         if (emailOrUsername.contains("@") && !Patterns.EMAIL_ADDRESS.matcher(emailOrUsername).matches()) {
             showError("Please enter a valid email address");
+            return;
+        }
+        
+        // For username login, validate username format
+        if (!emailOrUsername.contains("@") && emailOrUsername.length() < 3) {
+            showError("Username must be at least 3 characters");
             return;
         }
 
@@ -152,8 +169,10 @@ public class AuthenticationActivity extends AppCompatActivity {
                     // Get selected role (optional)
                     String role = getSelectedRole();
                     
+                    String welcomeName = user.getDisplayName() != null ? user.getDisplayName() : 
+                                        (user.getEmail() != null ? user.getEmail().split("@")[0] : "User");
                     Toast.makeText(AuthenticationActivity.this, 
-                            "Welcome " + (user.getDisplayName() != null ? user.getDisplayName() : user.getEmail()), 
+                            "Welcome back, " + welcomeName + "!", 
                             Toast.LENGTH_SHORT).show();
                     
                     // Navigate to MainActivity
@@ -211,7 +230,18 @@ public class AuthenticationActivity extends AppCompatActivity {
      * Show error message
      */
     private void showError(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+
+    /**
+     * Show success message with dialog
+     */
+    private void showSuccessDialog(String title, String message) {
+        new AlertDialog.Builder(this)
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton("OK", null)
+                .show();
     }
 
     @Override

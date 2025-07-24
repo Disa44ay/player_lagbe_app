@@ -10,6 +10,7 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseUser;
@@ -107,13 +108,13 @@ public class SignupActivity extends AppCompatActivity {
             return false;
         }
 
-        if (!password.matches(".*[a-zA-Z].*")) {
-            showError("Password must contain at least one letter");
+        if (username.length() < 3) {
+            showError("Username must be at least 3 characters");
             return false;
         }
 
-        if (!password.matches(".*[0-9].*")) {
-            showError("Password must contain at least one number");
+        if (!username.matches("^[a-zA-Z0-9_]+$")) {
+            showError("Username can only contain letters, numbers, and underscores");
             return false;
         }
 
@@ -135,15 +136,9 @@ public class SignupActivity extends AppCompatActivity {
                 setSignupButtonEnabled(true);
                 
                 if (user != null) {
-                    Toast.makeText(SignupActivity.this, 
-                            "Account created successfully! Welcome " + user.getEmail(), 
-                            Toast.LENGTH_SHORT).show();
-                    
-                    // Navigate to MainActivity
-                    Intent intent = new Intent(SignupActivity.this, MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                    finish();
+                    String username = etUsername.getText().toString().trim();
+                    showSuccessDialog("Account Created!", 
+                            "Welcome to Player Lagbe, " + username + "! Your account has been created successfully.");
                 }
             });
         }
@@ -178,7 +173,25 @@ public class SignupActivity extends AppCompatActivity {
      * Show error message
      */
     private void showError(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+
+    /**
+     * Show success message with dialog
+     */
+    private void showSuccessDialog(String title, String message) {
+        new AlertDialog.Builder(this)
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton("Continue", (dialog, which) -> {
+                    // Navigate to MainActivity after user clicks Continue
+                    Intent intent = new Intent(SignupActivity.this, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+                })
+                .setCancelable(false)
+                .show();
     }
 
     @Override
