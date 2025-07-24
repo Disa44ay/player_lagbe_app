@@ -5,24 +5,32 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class LauncherActivity extends AppCompatActivity {
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
-    SharedPreferencesManager prefsManager;
+/**
+ * Launcher Activity that checks Firebase Authentication state
+ * and redirects users to the appropriate screen
+ */
+public class LauncherActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        prefsManager = new SharedPreferencesManager(this);
+        // Check Firebase authentication state
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
 
-        if (prefsManager.isLoggedIn()) {
-            // Go to MainActivity (home screen)
+        if (currentUser != null) {
+            // User is signed in, redirect to MainActivity
             startActivity(new Intent(this, MainActivity.class));
         } else {
-            // Go to AuthenticationActivity (login/signup)
+            // User is not signed in, redirect to AuthenticationActivity
             startActivity(new Intent(this, AuthenticationActivity.class));
         }
 
+        // Close this launcher activity
         finish();
     }
 }
