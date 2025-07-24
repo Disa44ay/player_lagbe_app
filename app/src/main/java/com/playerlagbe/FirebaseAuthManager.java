@@ -27,15 +27,24 @@ import com.google.firebase.firestore.Query;
 
 /**
  * Firebase Authentication Manager
- * Handles email/password and Google Sign-In authentication
+ * 
+ * This class provides comprehensive authentication functionality for the Player Lagbe app:
+ * - Email/Password authentication with Firebase Auth
+ * - Username-based login (fetches email from Firestore)
+ * - Google Sign-In integration
+ * - User data management in Firestore
+ * - Password reset functionality
+ * - Comprehensive error handling
+ * 
+ * @author Player Lagbe Team
+ * @version 1.0
  */
 public class FirebaseAuthManager {
 
     private static final String TAG = "FirebaseAuthManager";
     public static final int RC_SIGN_IN = 9001;
     
-    // Web Client ID for Google Sign-In - this will be read from google-services.json
-    private static final String WEB_CLIENT_ID = "590655616431-your_actual_web_client_id.apps.googleusercontent.com";
+    // Web Client ID is automatically extracted from google-services.json via R.string.default_web_client_id
     
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
@@ -459,19 +468,29 @@ public class FirebaseAuthManager {
         String errorCode = exception.getMessage();
         if (errorCode == null) return "Authentication failed";
         
+        // More comprehensive error handling
         if (errorCode.contains("user-not-found")) {
             return "No account found with this email address";
         } else if (errorCode.contains("wrong-password")) {
             return "Incorrect password";
         } else if (errorCode.contains("invalid-email")) {
-            return "Invalid email address";
+            return "Invalid email address format";
         } else if (errorCode.contains("email-already-in-use")) {
             return "An account with this email already exists";
         } else if (errorCode.contains("weak-password")) {
-            return "Password is too weak";
+            return "Password is too weak. Please use at least 6 characters";
         } else if (errorCode.contains("network-request-failed")) {
-            return "Network error. Please check your connection";
+            return "Network error. Please check your internet connection";
+        } else if (errorCode.contains("too-many-requests")) {
+            return "Too many failed attempts. Please try again later";
+        } else if (errorCode.contains("user-disabled")) {
+            return "This account has been disabled. Please contact support";
+        } else if (errorCode.contains("operation-not-allowed")) {
+            return "This sign-in method is not enabled. Please contact support";
+        } else if (errorCode.contains("invalid-credential")) {
+            return "Invalid credentials. Please check your email and password";
         } else {
+            Log.w(TAG, "Unhandled auth error: " + errorCode);
             return "Authentication failed. Please try again";
         }
     }

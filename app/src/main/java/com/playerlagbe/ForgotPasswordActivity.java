@@ -9,6 +9,7 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseUser;
@@ -95,10 +96,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         public void onAuthSuccess(FirebaseUser user) {
             runOnUiThread(() -> {
                 setResetButtonEnabled(true);
-                Toast.makeText(ForgotPasswordActivity.this, 
-                        "Password reset email sent! Check your inbox.", 
-                        Toast.LENGTH_LONG).show();
-                finish();
+                showSuccessDialog("Email Sent!", 
+                        "A password reset link has been sent to your email address. Please check your inbox and follow the instructions to reset your password.");
             });
         }
 
@@ -132,6 +131,18 @@ public class ForgotPasswordActivity extends AppCompatActivity {
      * Show error message
      */
     private void showError(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+
+    /**
+     * Show success message with dialog
+     */
+    private void showSuccessDialog(String title, String message) {
+        new AlertDialog.Builder(this)
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton("OK", (dialog, which) -> finish())
+                .setCancelable(false)
+                .show();
     }
 }
