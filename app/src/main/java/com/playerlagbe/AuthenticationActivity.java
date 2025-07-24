@@ -105,19 +105,20 @@ public class AuthenticationActivity extends AppCompatActivity {
     }
 
     /**
-     * Perform email/password login
+     * Perform email/username/password login
      */
     private void performEmailPasswordLogin() {
-        String email = emailInput.getText().toString().trim();
+        String emailOrUsername = emailInput.getText().toString().trim();
         String password = passwordInput.getText().toString().trim();
 
         // Basic validation
-        if (email.isEmpty() || password.isEmpty()) {
+        if (emailOrUsername.isEmpty() || password.isEmpty()) {
             showError("Please fill in all fields");
             return;
         }
 
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        // For username login, don't validate email format
+        if (emailOrUsername.contains("@") && !Patterns.EMAIL_ADDRESS.matcher(emailOrUsername).matches()) {
             showError("Please enter a valid email address");
             return;
         }
@@ -125,8 +126,8 @@ public class AuthenticationActivity extends AppCompatActivity {
         // Disable login button during authentication
         setLoginButtonEnabled(false);
 
-        // Sign in with Firebase
-        authManager.signInWithEmailPassword(email, password, authListener);
+        // Sign in with Firebase (supports both email and username)
+        authManager.signInWithEmailPassword(emailOrUsername, password, authListener);
     }
 
     /**

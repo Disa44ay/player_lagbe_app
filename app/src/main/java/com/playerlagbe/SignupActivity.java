@@ -84,8 +84,8 @@ public class SignupActivity extends AppCompatActivity {
         // Disable signup button during registration
         setSignupButtonEnabled(false);
 
-        // Register with Firebase
-        authManager.registerWithEmailPassword(email, password, authListener);
+        // Register with Firebase including username
+        authManager.registerWithEmailPasswordAndUsername(email, password, username, authListener);
     }
 
     /**
