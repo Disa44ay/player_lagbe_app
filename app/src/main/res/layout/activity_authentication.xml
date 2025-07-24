@@ -4,7 +4,7 @@
     android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="?android:attr/colorBackground"
     tools:context=".AuthenticationActivity">
 
     <LinearLayout
@@ -29,9 +29,8 @@
             android:layout_height="wrap_content"
             android:hint="Email or Username"
             android:inputType="textEmailAddress"
-            android:padding="12dp"
-            android:background="@android:drawable/edit_text"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginBottom="16dp"
+            android:contentDescription="Enter your email or username" />
 
         <!-- Password Field -->
         <EditText
@@ -40,9 +39,8 @@
             android:layout_height="wrap_content"
             android:hint="Password"
             android:inputType="textPassword"
-            android:padding="12dp"
-            android:background="@android:drawable/edit_text"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginBottom="16dp"
+            android:contentDescription="Enter your password" />
 
         <!-- Role Selection (Radio Buttons) -->
         <RadioGroup
@@ -59,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:text="User"
                 android:checked="true"
-                android:textColor="#000" />
+                android:textColor="?android:attr/textColorPrimary" />
 
             <RadioButton
                 android:id="@+id/radioAdmin"
@@ -67,7 +65,7 @@
                 android:layout_height="wrap_content"
                 android:text="Admin"
                 android:layout_marginStart="32dp"
-                android:textColor="#000" />
+                android:textColor="?android:attr/textColorPrimary" />
         </RadioGroup>
 
         <!-- Login Button -->
@@ -76,8 +74,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Login"
-            android:backgroundTint="#D32F2F"
-            android:textColor="#FFF"
+            android:backgroundTint="?attr/colorPrimary"
+            android:textColor="?attr/colorOnPrimary"
             android:layout_marginBottom="16dp" />
 
         <!-- Google Sign In -->
@@ -87,7 +85,7 @@
             android:layout_height="wrap_content"
             android:text="Sign in with Google"
             android:backgroundTint="#4285F4"
-            android:textColor="#FFF"
+            android:textColor="@color/white"
             android:layout_marginBottom="16dp" />
 
         <!-- Forgot Password -->
@@ -96,10 +94,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Forgot Password?"
-            android:textColor="#D32F2F"
+            android:textColor="?attr/colorPrimary"
             android:textStyle="bold"
             android:layout_gravity="center"
-            android:layout_marginBottom="24dp" />
+            android:layout_marginBottom="24dp"
+            android:minHeight="48dp"
+            android:gravity="center" />
 
         <!-- Signup Redirect -->
         <TextView
@@ -107,9 +107,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Don't have an account? Sign up"
-            android:textColor="#000"
+            android:textColor="?android:attr/textColorPrimary"
             android:textStyle="italic"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            android:minHeight="48dp"
+            android:gravity="center" />
 
     </LinearLayout>
 </ScrollView>

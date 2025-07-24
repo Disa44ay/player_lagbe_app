@@ -2,6 +2,7 @@ package com.playerlagbe;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import java.util.Map;
 
 public class SharedPreferencesManager {
 
@@ -75,5 +76,21 @@ public class SharedPreferencesManager {
     // Optionally get stored email of user
     public String getUserEmail(String username) {
         return sharedPreferences.getString(KEY_EMAIL_PREFIX + username, null);
+    }
+
+    // Find username by email address
+    public String findUsernameByEmail(String email) {
+        Map<String, ?> allPrefs = sharedPreferences.getAll();
+        for (Map.Entry<String, ?> entry : allPrefs.entrySet()) {
+            String key = entry.getKey();
+            if (key.startsWith(KEY_EMAIL_PREFIX)) {
+                String storedEmail = (String) entry.getValue();
+                if (email.equals(storedEmail)) {
+                    // Extract username from the key by removing the email prefix
+                    return key.substring(KEY_EMAIL_PREFIX.length());
+                }
+            }
+        }
+        return null; // Email not found
     }
 }

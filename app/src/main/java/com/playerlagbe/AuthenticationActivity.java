@@ -95,11 +95,9 @@ public class AuthenticationActivity extends AppCompatActivity {
 
     // Helper method to find username by email stored in prefs
     private String findUsernameByEmail(String email) {
-        // Unfortunately SharedPreferencesManager does not have a method to get all usernames,
-        // so you need to scan keys or maintain a user list separately.
-        // For simplicity, assume username = email prefix if stored, or just return null here.
-        // Better approach: store a mapping of emails to usernames during signup.
-        // Here, I return null as a placeholder.
-        return null;
+        // Get all usernames that exist and check their emails
+        // This is a simple implementation that checks common username patterns
+        // In a real app, you'd maintain a separate email->username mapping
+        return prefsManager.findUsernameByEmail(email);
     }
 }
