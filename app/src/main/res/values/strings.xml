@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Player Lagbe</string>
     
+    <!-- Google Sign-In Web Client ID -->
+    <string name="default_web_client_id">590655616431-webdefghijklmnopqrstuvwxyz78901.apps.googleusercontent.com</string>
+    
     <!-- Authentication strings -->
     <string name="email_hint">Email</string>
     <string name="password_hint">Password</string>
