@@ -16,16 +16,17 @@
         android:textSize="28sp"
         android:textColor="?attr/colorPrimary"
         android:textStyle="bold"
-        android:layout_marginBottom="24dp"/>
+        android:layout_marginBottom="16dp"/>
 
+    <!-- ✅ Add this block to fix the error -->
     <TextView
-        android:id="@+id/tvWelcomeMsg"
+        android:id="@+id/tvUserEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="You are successfully logged in."
+        android:text="Email"
         android:textSize="16sp"
         android:textColor="?android:attr/textColorPrimary"
-        android:layout_marginBottom="48dp" />
+        android:layout_marginBottom="32dp"/>
 
     <Button
         android:id="@+id/btnLogout"
@@ -34,5 +35,4 @@
         android:text="Logout"
         android:backgroundTint="?attr/colorPrimary"
         android:textColor="?attr/colorOnPrimary"/>
-
 </LinearLayout>

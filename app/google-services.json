@@ -14,15 +14,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "590655616431-abcdefghijklmnopqrstuvwxyz123456.apps.googleusercontent.com",
+          "client_id": "590655616431-jltg0pmhalhe6ce16sfeuto6in5ap4q1.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.playerlagbe",
-            "certificate_hash": "sha1_placeholder"
+            "certificate_hash": "cbbd512d64152e2d42c44c1f62258c97415462f7"
           }
         },
         {
-          "client_id": "590655616431-webdefghijklmnopqrstuvwxyz78901.apps.googleusercontent.com",
+          "client_id": "590655616431-2ciutgm4v6mf3f9cm9lcvdggf4ofvc0r.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -35,7 +35,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "590655616431-webdefghijklmnopqrstuvwxyz78901.apps.googleusercontent.com",
+              "client_id": "590655616431-2ciutgm4v6mf3f9cm9lcvdggf4ofvc0r.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -1,57 +1,30 @@
 package com.playerlagbe;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.util.Patterns;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.*;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
+import com.google.android.gms.tasks.*;
+import com.google.firebase.auth.*;
+import com.google.firebase.firestore.*;
 
-/**
- * Firebase Authentication Manager
- * 
- * This class provides comprehensive authentication functionality for the Player Lagbe app:
- * - Email/Password authentication with Firebase Auth
- * - Username-based login (fetches email from Firestore)
- * - Google Sign-In integration
- * - User data management in Firestore
- * - Password reset functionality
- * - Comprehensive error handling
- * 
- * @author Player Lagbe Team
- * @version 1.0
- */
+import java.util.*;
+
 public class FirebaseAuthManager {
 
     private static final String TAG = "FirebaseAuthManager";
     public static final int RC_SIGN_IN = 9001;
-    
-    // Web Client ID is automatically extracted from google-services.json via R.string.default_web_client_id
-    
-    private FirebaseAuth mAuth;
-    private GoogleSignInClient mGoogleSignInClient;
-    private FirebaseFirestore mFirestore;
-    private Context context;
-    
-    // Interface for authentication callbacks
+
+    private final FirebaseAuth mAuth;
+    private final GoogleSignInClient mGoogleSignInClient;
+    private final FirebaseFirestore mFirestore;
+    private final Context context;
+
     public interface AuthListener {
         void onAuthSuccess(FirebaseUser user);
         void onAuthFailure(String error);
@@ -62,436 +35,158 @@ public class FirebaseAuthManager {
         this.context = context;
         mAuth = FirebaseAuth.getInstance();
         mFirestore = FirebaseFirestore.getInstance();
-        
-        // Configure Google Sign-In - using default web client ID from google-services.json
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(context.getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-        
-        mGoogleSignInClient = GoogleSignIn.getClient(context, gso);
+        mGoogleSignInClient = GoogleSignIn.getClient(context,
+                new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestIdToken(context.getString(R.string.default_web_client_id))
+                        .requestEmail().build());
     }
 
-    /**
-     * Check if user is currently signed in
-     */
     public boolean isUserSignedIn() {
         return mAuth.getCurrentUser() != null;
     }
 
-    /**
-     * Get current Firebase user
-     */
     public FirebaseUser getCurrentUser() {
         return mAuth.getCurrentUser();
     }
 
-    /**
-     * Sign in with email/username and password
-     * If input contains @, treat as email, otherwise treat as username
-     */
-    public void signInWithEmailPassword(String emailOrUsername, String password, AuthListener listener) {
-        if (emailOrUsername.isEmpty() || password.isEmpty()) {
-            listener.onAuthFailure("Please fill in all fields");
+    public void signIn(String input, String password, AuthListener listener) {
+        if (input.isEmpty() || password.isEmpty()) {
+            listener.onAuthFailure("Fields cannot be empty");
             return;
         }
-
         listener.onAuthLoading(true);
-        
-        // Check if input contains @ symbol (email) or not (username)
-        if (emailOrUsername.contains("@")) {
-            // Direct email login
-            performEmailPasswordLogin(emailOrUsername, password, listener);
-        } else {
-            // Username login - first fetch email from Firestore
-            fetchEmailFromUsername(emailOrUsername, password, listener);
-        }
+        if (input.contains("@")) loginWithEmail(input, password, listener);
+        else fetchEmailByUsername(input, email -> loginWithEmail(email, password, listener), listener);
     }
 
-    /**
-     * Perform direct email/password login
-     */
-    private void performEmailPasswordLogin(String email, String password, AuthListener listener) {
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        listener.onAuthLoading(false);
-                        
-                        if (task.isSuccessful()) {
-                            Log.d(TAG, "signInWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            listener.onAuthSuccess(user);
-                        } else {
-                            Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            String errorMessage = getAuthErrorMessage(task.getException());
-                            listener.onAuthFailure(errorMessage);
-                        }
-                    }
-                });
+    private void loginWithEmail(String email, String password, AuthListener listener) {
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+            listener.onAuthLoading(false);
+            if (task.isSuccessful()) listener.onAuthSuccess(mAuth.getCurrentUser());
+            else listener.onAuthFailure(getAuthErrorMessage(task.getException()));
+        });
     }
 
-    /**
-     * Fetch email address from username in Firestore and then login
-     */
-    private void fetchEmailFromUsername(String username, String password, AuthListener listener) {
-        Log.d(TAG, "Fetching email for username: " + username);
-        
-        mFirestore.collection("users")
-                .whereEqualTo("username", username)
-                .limit(1)
-                .get()
+    private void fetchEmailByUsername(String username, OnEmailFetched callback, AuthListener listener) {
+        mFirestore.collection("users").whereEqualTo("username", username).limit(1).get()
                 .addOnCompleteListener(task -> {
+                    listener.onAuthLoading(false);
                     if (task.isSuccessful() && !task.getResult().isEmpty()) {
-                        DocumentSnapshot document = task.getResult().getDocuments().get(0);
-                        String email = document.getString("email");
-                        
-                        if (email != null && !email.isEmpty()) {
-                            Log.d(TAG, "Found email for username: " + email);
-                            performEmailPasswordLogin(email, password, listener);
-                        } else {
-                            listener.onAuthLoading(false);
-                            listener.onAuthFailure("Username not found");
-                        }
-                    } else {
-                        listener.onAuthLoading(false);
-                        listener.onAuthFailure("Username not found");
-                        Log.w(TAG, "Username query failed", task.getException());
-                    }
+                        callback.onFetched(task.getResult().getDocuments().get(0).getString("email"));
+                    } else listener.onAuthFailure("Username not found");
                 });
     }
 
-    /**
-     * Register user with email, password, and username
-     */
-    public void registerWithEmailPasswordAndUsername(String email, String password, String username, AuthListener listener) {
+    public void register(String email, String password, String username, AuthListener listener) {
         if (email.isEmpty() || password.isEmpty() || username.isEmpty()) {
-            listener.onAuthFailure("Please fill in all fields");
-            return;
+            listener.onAuthFailure("All fields required"); return;
         }
-
         if (password.length() < 6) {
-            listener.onAuthFailure("Password must be at least 6 characters");
-            return;
+            listener.onAuthFailure("Password too short"); return;
         }
-
         listener.onAuthLoading(true);
-        
-        // First check if username already exists
-        checkUsernameAvailability(username, isAvailable -> {
-            if (!isAvailable) {
+        checkUsername(username, available -> {
+            if (!available) {
                 listener.onAuthLoading(false);
-                listener.onAuthFailure("Username already taken");
+                listener.onAuthFailure("Username taken");
                 return;
             }
-            
-            // Create user account
             mAuth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                Log.d(TAG, "createUserWithEmail:success");
-                                FirebaseUser user = mAuth.getCurrentUser();
-                                
-                                if (user != null) {
-                                    // Save user data to Firestore
-                                    saveUserDataToFirestore(user.getUid(), email, username, listener);
-                                } else {
-                                    listener.onAuthLoading(false);
-                                    listener.onAuthFailure("Failed to get user information");
-                                }
-                            } else {
-                                listener.onAuthLoading(false);
-                                Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                                String errorMessage = getAuthErrorMessage(task.getException());
-                                listener.onAuthFailure(errorMessage);
-                            }
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            saveUser(mAuth.getCurrentUser(), email, username, listener);
+                        } else {
+                            listener.onAuthLoading(false);
+                            listener.onAuthFailure(getAuthErrorMessage(task.getException()));
                         }
                     });
         });
     }
 
-    /**
-     * Legacy method for backwards compatibility
-     */
-    public void registerWithEmailPassword(String email, String password, AuthListener listener) {
-        registerWithEmailPasswordAndUsername(email, password, "", listener);
+    private void checkUsername(String username, OnUsernameChecked listener) {
+        mFirestore.collection("users").whereEqualTo("username", username).limit(1).get()
+                .addOnCompleteListener(task -> listener.onChecked(task.isSuccessful() && task.getResult().isEmpty()));
     }
 
-    /**
-     * Check if username is available
-     */
-    private void checkUsernameAvailability(String username, OnUsernameCheckListener listener) {
-        mFirestore.collection("users")
-                .whereEqualTo("username", username)
-                .limit(1)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        boolean isAvailable = task.getResult().isEmpty();
-                        listener.onUsernameChecked(isAvailable);
-                    } else {
-                        // If there's an error, assume username is not available for safety
-                        listener.onUsernameChecked(false);
-                    }
-                });
+    private void saveUser(FirebaseUser user, String email, String username, AuthListener listener) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("email", email);
+        data.put("username", username);
+        data.put("createdAt", System.currentTimeMillis());
+        mFirestore.collection("users").document(user.getUid()).set(data)
+                .addOnSuccessListener(aVoid -> listener.onAuthSuccess(user))
+                .addOnFailureListener(e -> listener.onAuthFailure("Saved auth but failed Firestore"));
     }
 
-    /**
-     * Save user data to Firestore
-     */
-    private void saveUserDataToFirestore(String uid, String email, String username, AuthListener listener) {
-        // Create user data map
-        java.util.Map<String, Object> userData = new java.util.HashMap<>();
-        userData.put("email", email);
-        userData.put("username", username);
-        userData.put("createdAt", System.currentTimeMillis());
-        
-        mFirestore.collection("users").document(uid)
-                .set(userData)
-                .addOnSuccessListener(aVoid -> {
-                    Log.d(TAG, "User data saved successfully");
-                    listener.onAuthLoading(false);
-                    listener.onAuthSuccess(mAuth.getCurrentUser());
-                })
-                .addOnFailureListener(e -> {
-                    Log.w(TAG, "Error saving user data", e);
-                    listener.onAuthLoading(false);
-                    listener.onAuthFailure("Account created but failed to save user data");
-                });
-    }
-
-    /**
-     * Interface for username availability check
-     */
-    private interface OnUsernameCheckListener {
-        void onUsernameChecked(boolean isAvailable);
-    }
-
-    /**
-     * Start Google Sign-In intent
-     */
     public Intent getGoogleSignInIntent() {
         return mGoogleSignInClient.getSignInIntent();
     }
 
-    /**
-     * Handle Google Sign-In result
-     */
     public void handleGoogleSignInResult(Intent data, AuthListener listener) {
-        Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-        
         try {
-            // Google Sign In was successful, authenticate with Firebase
-            GoogleSignInAccount account = task.getResult(ApiException.class);
-            Log.d(TAG, "Google Sign-In successful, account: " + account.getEmail());
-            Log.d(TAG, "ID Token: " + (account.getIdToken() != null ? "Present" : "Null"));
+            GoogleSignInAccount account = GoogleSignIn.getSignedInAccountFromIntent(data).getResult(ApiException.class);
             firebaseAuthWithGoogle(account.getIdToken(), listener);
         } catch (ApiException e) {
-            // Google Sign In failed
-            Log.w(TAG, "Google sign in failed with code: " + e.getStatusCode(), e);
-            String errorMessage = getGoogleSignInErrorMessage(e.getStatusCode());
-            listener.onAuthFailure(errorMessage);
+            listener.onAuthFailure("Google Sign-In failed: " + e.getStatusCode());
         }
     }
 
-    /**
-     * Convert Google Sign-In error codes to user-friendly messages
-     */
-    private String getGoogleSignInErrorMessage(int statusCode) {
-        switch (statusCode) {
-            case 7: // NETWORK_ERROR
-                return "Network error. Please check your internet connection.";
-            case 8: // INTERNAL_ERROR
-                return "Internal error occurred. Please try again.";
-            case 10: // DEVELOPER_ERROR
-                return "App configuration error. Please contact support.";
-            case 12500: // SIGN_IN_CANCELLED
-                return "Sign-in was cancelled.";
-            case 12501: // SIGN_IN_CURRENTLY_IN_PROGRESS
-                return "Sign-in already in progress.";
-            case 12502: // SIGN_IN_FAILED
-                return "Sign-in failed. Please try again.";
-            default:
-                return "Google Sign-In failed. Error code: " + statusCode;
-        }
-    }
-
-    /**
-     * Authenticate with Firebase using Google credentials
-     */
     private void firebaseAuthWithGoogle(String idToken, AuthListener listener) {
         if (idToken == null) {
-            listener.onAuthFailure("Failed to get Google ID token");
-            return;
+            listener.onAuthFailure("No ID token"); return;
         }
-        
         listener.onAuthLoading(true);
-        
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        listener.onAuthLoading(false);
-                        
-                        if (task.isSuccessful()) {
-                            Log.d(TAG, "Firebase signInWithCredential: success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            
-                            // For Google Sign-In users, save/update their data in Firestore
-                            if (user != null && user.getDisplayName() != null) {
-                                saveGoogleUserToFirestore(user, listener);
-                            } else {
-                                listener.onAuthSuccess(user);
-                            }
-                        } else {
-                            Log.w(TAG, "Firebase signInWithCredential: failure", task.getException());
-                            String errorMessage = getAuthErrorMessage(task.getException());
-                            listener.onAuthFailure("Firebase authentication failed: " + errorMessage);
-                        }
-                    }
-                });
+        mAuth.signInWithCredential(credential).addOnCompleteListener(task -> {
+            listener.onAuthLoading(false);
+            if (task.isSuccessful()) saveGoogleUser(mAuth.getCurrentUser(), listener);
+            else listener.onAuthFailure(getAuthErrorMessage(task.getException()));
+        });
     }
 
-    /**
-     * Save Google user data to Firestore
-     */
-    private void saveGoogleUserToFirestore(FirebaseUser user, AuthListener listener) {
-        // Check if user document already exists
-        mFirestore.collection("users").document(user.getUid())
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        if (!document.exists()) {
-                            // Create new user document for Google Sign-In user
-                            java.util.Map<String, Object> userData = new java.util.HashMap<>();
-                            userData.put("email", user.getEmail());
-                            userData.put("username", generateUsernameFromEmail(user.getEmail()));
-                            userData.put("displayName", user.getDisplayName());
-                            userData.put("createdAt", System.currentTimeMillis());
-                            userData.put("signInMethod", "google");
-                            
-                            mFirestore.collection("users").document(user.getUid())
-                                    .set(userData)
-                                    .addOnSuccessListener(aVoid -> {
-                                        Log.d(TAG, "Google user data saved successfully");
-                                        listener.onAuthSuccess(user);
-                                    })
-                                    .addOnFailureListener(e -> {
-                                        Log.w(TAG, "Error saving Google user data", e);
-                                        // Still proceed with login even if Firestore save fails
-                                        listener.onAuthSuccess(user);
-                                    });
-                        } else {
-                            // User already exists, just proceed with login
-                            listener.onAuthSuccess(user);
-                        }
-                    } else {
-                        // Error checking user existence, still proceed with login
-                        Log.w(TAG, "Error checking user existence", task.getException());
-                        listener.onAuthSuccess(user);
-                    }
-                });
+    private void saveGoogleUser(FirebaseUser user, AuthListener listener) {
+        DocumentReference ref = mFirestore.collection("users").document(user.getUid());
+        ref.get().addOnSuccessListener(doc -> {
+            if (!doc.exists()) {
+                Map<String, Object> data = new HashMap<>();
+                data.put("email", user.getEmail());
+                data.put("username", user.getEmail().split("@")[0]);
+                data.put("displayName", user.getDisplayName());
+                data.put("createdAt", System.currentTimeMillis());
+                data.put("signInMethod", "google");
+                ref.set(data);
+            }
+            listener.onAuthSuccess(user);
+        });
     }
 
-    /**
-     * Generate a username from email for Google Sign-In users
-     */
-    private String generateUsernameFromEmail(String email) {
-        if (email == null) return "user" + System.currentTimeMillis();
-        
-        String username = email.split("@")[0];
-        // Remove any special characters and make it lowercase
-        username = username.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
-        
-        // If too short, append timestamp
-        if (username.length() < 3) {
-            username += System.currentTimeMillis();
-        }
-        
-        return username;
-    }
-
-    /**
-     * Send password reset email
-     */
     public void sendPasswordResetEmail(String email, AuthListener listener) {
-        if (email.isEmpty()) {
-            listener.onAuthFailure("Please enter your email address");
-            return;
+        if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            listener.onAuthFailure("Invalid email"); return;
         }
-
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            listener.onAuthFailure("Please enter a valid email address");
-            return;
-        }
-
-        Log.d(TAG, "Sending password reset email to: " + email);
         listener.onAuthLoading(true);
-
-        mAuth.sendPasswordResetEmail(email)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        listener.onAuthLoading(false);
-                        
-                        if (task.isSuccessful()) {
-                            Log.d(TAG, "Password reset email sent successfully to: " + email);
-                            listener.onAuthSuccess(null);
-                        } else {
-                            Log.w(TAG, "Failed to send password reset email", task.getException());
-                            String errorMessage = getAuthErrorMessage(task.getException());
-                            listener.onAuthFailure("Failed to send reset email: " + errorMessage);
-                        }
-                    }
-                });
+        mAuth.sendPasswordResetEmail(email).addOnCompleteListener(task -> {
+            listener.onAuthLoading(false);
+            if (task.isSuccessful()) listener.onAuthSuccess(null);
+            else listener.onAuthFailure(getAuthErrorMessage(task.getException()));
+        });
     }
 
-    /**
-     * Sign out user
-     */
     public void signOut() {
         mAuth.signOut();
         mGoogleSignInClient.signOut();
-        Log.d(TAG, "User signed out");
     }
 
-    /**
-     * Convert Firebase Auth exceptions to user-friendly messages
-     */
-    private String getAuthErrorMessage(Exception exception) {
-        if (exception == null) return "Unknown error occurred";
-        
-        String errorCode = exception.getMessage();
-        if (errorCode == null) return "Authentication failed";
-        
-        // More comprehensive error handling
-        if (errorCode.contains("user-not-found")) {
-            return "No account found with this email address";
-        } else if (errorCode.contains("wrong-password")) {
-            return "Incorrect password";
-        } else if (errorCode.contains("invalid-email")) {
-            return "Invalid email address format";
-        } else if (errorCode.contains("email-already-in-use")) {
-            return "An account with this email already exists";
-        } else if (errorCode.contains("weak-password")) {
-            return "Password is too weak. Please use at least 6 characters";
-        } else if (errorCode.contains("network-request-failed")) {
-            return "Network error. Please check your internet connection";
-        } else if (errorCode.contains("too-many-requests")) {
-            return "Too many failed attempts. Please try again later";
-        } else if (errorCode.contains("user-disabled")) {
-            return "This account has been disabled. Please contact support";
-        } else if (errorCode.contains("operation-not-allowed")) {
-            return "This sign-in method is not enabled. Please contact support";
-        } else if (errorCode.contains("invalid-credential")) {
-            return "Invalid credentials. Please check your email and password";
-        } else {
-            Log.w(TAG, "Unhandled auth error: " + errorCode);
-            return "Authentication failed. Please try again";
-        }
+    private String getAuthErrorMessage(Exception e) {
+        if (e == null || e.getMessage() == null) return "Auth failed";
+        String msg = e.getMessage();
+        if (msg.contains("user-not-found")) return "User not found";
+        if (msg.contains("wrong-password")) return "Wrong password";
+        if (msg.contains("email-already-in-use")) return "Email in use";
+        if (msg.contains("weak-password")) return "Weak password";
+        return "Error: " + msg;
     }
+
+    private interface OnEmailFetched { void onFetched(String email); }
+    private interface OnUsernameChecked { void onChecked(boolean available); }
 }
