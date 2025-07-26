@@ -1,106 +1,56 @@
 package com.playerlagbe;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.TextView;
-
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.playerlagbe.fragments.HomeFragment;
+import com.playerlagbe.fragments.ManagerFragment;
+import com.playerlagbe.fragments.ShopFragment;
+import com.playerlagbe.fragments.TeamsFragment;
 
-/**
- * Main Activity - Home screen for authenticated users
- * Shows user information and provides logout functionality
- */
 public class MainActivity extends AppCompatActivity {
 
-    private Button btnLogout;
-    private TextView tvWelcome, tvUserEmail;
-    private FirebaseAuthManager authManager;
+    BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Initialize Firebase Auth Manager
-        authManager = new FirebaseAuthManager(this);
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        openFragment(new HomeFragment()); // Default fragment
 
-        // Initialize views
-        initializeViews();
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            Fragment selectedFragment = null;
 
-        // Display user information
-        displayUserInfo();
+            int itemId = item.getItemId();
 
-        // Set up logout functionality
-        setupLogout();
-    }
-
-    /**
-     * Initialize all views
-     */
-    private void initializeViews() {
-        btnLogout = findViewById(R.id.btnLogout);
-        tvWelcome = findViewById(R.id.tvWelcome);
-        tvUserEmail = findViewById(R.id.tvUserEmail);
-    }
-
-    /**
-     * Display current user information
-     */
-    private void displayUserInfo() {
-        FirebaseUser currentUser = authManager.getCurrentUser();
-        
-        if (currentUser != null) {
-            String displayName = currentUser.getDisplayName();
-            String email = currentUser.getEmail();
-            
-            if (tvWelcome != null) {
-                String welcomeText = "Welcome" + (displayName != null ? ", " + displayName : "");
-                tvWelcome.setText(welcomeText);
+            if (itemId == R.id.nav_home) {
+                selectedFragment = new HomeFragment();
+            } else if (itemId == R.id.nav_teams) {
+                selectedFragment = new TeamsFragment();
+            } else if (itemId == R.id.nav_shop) {
+                selectedFragment = new ShopFragment();
+            } else if (itemId == R.id.nav_manager) {
+                selectedFragment = new ManagerFragment();
             }
-            
-            if (tvUserEmail != null && email != null) {
-                tvUserEmail.setText(email);
-            }
-        } else {
-            // User is not signed in, redirect to authentication
-            redirectToAuth();
-        }
-    }
 
-    /**
-     * Set up logout functionality
-     */
-    private void setupLogout() {
-        btnLogout.setOnClickListener(v -> {
-            // Sign out from Firebase
-            authManager.signOut();
-            
-            // Redirect to authentication screen
-            redirectToAuth();
+            if (selectedFragment != null) {
+                openFragment(selectedFragment);
+                return true;
+            }
+            return false;
         });
+
     }
 
-    /**
-     * Redirect to authentication activity
-     */
-    private void redirectToAuth() {
-        Intent intent = new Intent(MainActivity.this, AuthenticationActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        finish();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        
-        // Check if user is still signed in
-        if (!authManager.isUserSignedIn()) {
-            redirectToAuth();
-        }
+    private void openFragment(Fragment fragment) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragmentContainer, fragment)
+                .commit();
     }
 }

@@ -86,7 +86,7 @@ public class SignupActivity extends AppCompatActivity {
         setSignupButtonEnabled(false);
 
         // Register with Firebase including username
-        authManager.registerWithEmailPasswordAndUsername(email, password, username, authListener);
+        authManager.register(email, password, username, authListener);
     }
 
     /**

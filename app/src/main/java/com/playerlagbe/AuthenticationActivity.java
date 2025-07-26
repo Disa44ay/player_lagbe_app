@@ -144,7 +144,8 @@ public class AuthenticationActivity extends AppCompatActivity {
         setLoginButtonEnabled(false);
 
         // Sign in with Firebase (supports both email and username)
-        authManager.signInWithEmailPassword(emailOrUsername, password, authListener);
+        authManager.signIn(emailOrUsername, password, authListener);
+
     }
 
     /**

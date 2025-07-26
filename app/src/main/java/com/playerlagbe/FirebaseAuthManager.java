@@ -68,12 +68,33 @@ public class FirebaseAuthManager {
     }
 
     private void fetchEmailByUsername(String username, OnEmailFetched callback, AuthListener listener) {
-        mFirestore.collection("users").whereEqualTo("username", username).limit(1).get()
+        Log.d("FIRESTORE", "Querying Firestore for username: " + username);
+
+        mFirestore.collection("users")
+                .whereEqualTo("username", username)
+                .limit(1)
+                .get()
                 .addOnCompleteListener(task -> {
                     listener.onAuthLoading(false);
-                    if (task.isSuccessful() && !task.getResult().isEmpty()) {
-                        callback.onFetched(task.getResult().getDocuments().get(0).getString("email"));
-                    } else listener.onAuthFailure("Username not found");
+
+                    if (task.isSuccessful()) {
+                        Log.d("FIRESTORE", "Query successful. Documents found: " + task.getResult().size());
+
+                        if (!task.getResult().isEmpty()) {
+                            DocumentSnapshot doc = task.getResult().getDocuments().get(0);
+                            Log.d("FIRESTORE", "User document: " + doc.getData());
+                            String email = doc.getString("email");
+                            Log.d("FIRESTORE", "Extracted email: " + email);
+                            callback.onFetched(email);
+                        } else {
+                            Log.w("FIRESTORE", "No user found with username: " + username);
+                            listener.onAuthFailure("Username not found");
+                        }
+                    } else {
+                        Exception e = task.getException();
+                        Log.e("FIRESTORE", "Firestore query failed", e);
+                        listener.onAuthFailure("Failed to fetch username");
+                    }
                 });
     }
 
