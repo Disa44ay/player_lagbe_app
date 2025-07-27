@@ -1,27 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Keep same clean design for night mode - no dark theme as specified -->
-    
-    <!-- Override to maintain white background and black text -->
-    <color name="app_background">@color/white</color>
-    <color name="app_text_primary">@color/black</color>
-    <color name="app_text_secondary">#666666</color>
+    <!-- Modern Red/Black/White Palette for Dark Mode -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#121212</color>
+    <color name="light_grey">#1E1E1E</color>
+    <color name="medium_grey">#232323</color>
+    <color name="dark_grey">#333333</color>
+    <color name="border_grey">#232323</color>
+
+    <!-- Primary App Colors -->
+    <color name="app_background">#121212</color>
+    <color name="app_text_primary">#FFFFFF</color>
+    <color name="app_text_secondary">#CCCCCC</color>
     <color name="app_text_hint">#999999</color>
-    
-    <!-- Button Colors remain the same -->
-    <color name="button_background">@color/light_grey</color>
-    <color name="button_pressed">@color/medium_grey</color>
-    <color name="button_text">@color/black</color>
-    
-    <!-- Input Field Colors remain the same -->
-    <color name="input_background">@color/white</color>
-    <color name="input_border">@color/border_grey</color>
-    <color name="input_text">@color/black</color>
-    <color name="input_hint">@color/app_text_hint</color>
-    
-    <!-- Material colors to maintain consistency -->
-    <color name="colorBackground">@color/white</color>
-    <color name="colorSurface">@color/white</color>
-    <color name="colorOnBackground">@color/black</color>
-    <color name="colorOnSurface">@color/black</color>
+
+    <!-- Deep Red for Logo, Buttons, Borders, Icons -->
+    <color name="app_red">#C62828</color>
+
+    <!-- Button Colors -->
+    <color name="button_background">@color/app_red</color>
+    <color name="button_pressed">#B71C1C</color>
+    <color name="button_text">#FFFFFF</color>
+
+    <!-- Input Field Colors -->
+    <color name="input_background">#232323</color>
+    <color name="input_border">#C62828</color>
+    <color name="input_text">#FFFFFF</color>
+    <color name="input_hint">#999999</color>
+
+    <!-- Component Colors -->
+    <color name="card_background">#232323</color>
+    <color name="divider_color">#333333</color>
+    <color name="icon_color">#C62828</color>
+
+    <!-- Status Bar -->
+    <color name="status_bar">#121212</color>
+
+    <!-- Material Colors -->
+    <color name="colorPrimary">#C62828</color>
+    <color name="colorPrimaryVariant">#B71C1C</color>
+    <color name="colorOnPrimary">#FFFFFF</color>
+    <color name="colorSecondary">#C62828</color>
+    <color name="colorSecondaryVariant">#B71C1C</color>
+    <color name="colorOnSecondary">#FFFFFF</color>
+    <color name="colorBackground">#121212</color>
+    <color name="colorSurface">#232323</color>
+    <color name="colorOnBackground">#FFFFFF</color>
+    <color name="colorOnSurface">#FFFFFF</color>
 </resources>
