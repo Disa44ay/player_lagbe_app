@@ -1,12 +1,175 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Home fragment content is now handled in activity_main.xml -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/app_background">
 
-    <!-- This fragment is now integrated into MainActivity layout -->
-    <!-- Content will be dynamically loaded here -->
+    <!-- Top App Bar with Hamburger Menu -->
+    <LinearLayout
+        android:id="@+id/topAppBar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:background="@color/card_background"
+        android:elevation="2dp"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
 
+        <!-- App Logo -->
+        <TextView
+            android:id="@+id/appLogo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Player Lagbe"
+            style="@style/AppTitleTextStyle"
+            android:gravity="start|center_vertical" />
+
+        <!-- Hamburger Menu Icon -->
+        <ImageView
+            android:id="@+id/hamburgerMenuIcon"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_menu"
+            android:contentDescription="Menu"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true" />
+    </LinearLayout>
+
+    <!-- Divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divider_color" />
+
+    <!-- Main Home Content -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Latest Products Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Latest Products"
+                style="@style/AppTitleTextStyle"
+                android:layout_marginBottom="12dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewProducts"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginBottom="24dp"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+            <!-- Recruit Player Form Section -->
+            <include layout="@layout/recruit_player_form" />
+
+            <!-- Ongoing Matches Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ongoing Matches"
+                style="@style/AppTitleTextStyle"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="12dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewMatches"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp" />
+
+            <!-- See More Button -->
+            <Button
+                android:id="@+id/btnSeeMore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="See More"
+                style="@style/AppButtonStyle"
+                android:layout_marginBottom="24dp" />
+
+            <!-- Footer Section -->
+            <include layout="@layout/footer_layout" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Hamburger Menu Popup (initially gone) -->
+    <LinearLayout
+        android:id="@+id/hamburgerMenuLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/card_background"
+        android:elevation="8dp"
+        android:padding="16dp"
+        android:layout_gravity="end|top"
+        android:visibility="gone"
+        android:layout_marginTop="56dp"
+        android:layout_marginEnd="16dp">
+
+        <ImageView
+            android:id="@+id/menuProfileIcon"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_profile"
+            android:contentDescription="Profile"
+            android:layout_marginBottom="16dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <ImageView
+            android:id="@+id/menuCartIcon"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_cart"
+            android:contentDescription="Cart"
+            android:layout_marginBottom="16dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="16dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Theme"
+                style="@style/AppNormalTextStyle"
+                android:layout_marginEnd="8dp" />
+            <Switch
+                android:id="@+id/menuThemeSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/menuLogoutButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Logout"
+            style="@style/AppButtonStyle"
+            android:backgroundTint="@color/app_red"
+            android:textColor="@color/white" />
+    </LinearLayout>
 </LinearLayout>

@@ -14,6 +14,7 @@ import com.playerlagbe.fragments.ManagerFragment;
 import com.playerlagbe.fragments.ShopFragment;
 import com.playerlagbe.fragments.TeamsFragment;
 import androidx.appcompat.app.AppCompatDelegate;
+import android.content.SharedPreferences;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,28 +26,23 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Initialize views
-        bottomNavigationView = findViewById(R.id.bottomNavigationView);
-        profileIcon = findViewById(R.id.profileIcon);
-        cartIcon = findViewById(R.id.cartIcon);
-        themeToggleIcon = findViewById(R.id.themeToggleIcon);
+        // Check if user is logged in
+        FirebaseAuthManager authManager = new FirebaseAuthManager(this);
+        if (!authManager.isUserSignedIn()) {
+            Intent intent = new Intent(MainActivity.this, AuthenticationActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+            return;
+        }
 
-        // Set initial icon state and click listener for theme toggle
-        updateThemeToggleIcon();
-        themeToggleIcon.setOnClickListener(v -> toggleTheme());
-
-        // Set up click listeners for top bar icons
-        profileIcon.setOnClickListener(v -> openProfile());
-        cartIcon.setOnClickListener(v -> openCart());
-
-        // Set up bottom navigation
+        // Initialize bottom navigation
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         openFragment(new HomeFragment()); // Default fragment
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
             Fragment selectedFragment = null;
-
             int itemId = item.getItemId();
-
             if (itemId == R.id.nav_home) {
                 selectedFragment = new HomeFragment();
             } else if (itemId == R.id.nav_teams) {
@@ -56,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
             } else if (itemId == R.id.nav_manager) {
                 selectedFragment = new ManagerFragment();
             }
-
             if (selectedFragment != null) {
                 openFragment(selectedFragment);
                 return true;
