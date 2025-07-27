@@ -5,46 +5,52 @@
     android:background="@color/app_background"
     android:padding="16dp">
 
-    <!-- Top App Bar with Hamburger Menu -->
-    <include layout="@layout/top_bar" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center">
+        android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Shop"
-            style="@style/AppTitleTextStyle"
-            android:layout_marginBottom="16dp" />
+        <!-- Top App Bar with Hamburger Menu -->
+        <include layout="@layout/top_bar" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Shop functionality will be implemented here"
-            style="@style/AppNormalTextStyle"
-            android:textAlignment="center"
-            android:layout_marginBottom="24dp" />
-
-        <!-- Placeholder content -->
-        <androidx.cardview.widget.CardView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/AppCardStyle">
+            android:orientation="vertical"
+            android:gravity="center">
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Sports equipment and gear shopping coming soon..."
+                android:text="Shop"
+                style="@style/AppTitleTextStyle"
+                android:layout_marginBottom="16dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Shop functionality will be implemented here"
                 style="@style/AppNormalTextStyle"
                 android:textAlignment="center"
-                android:padding="24dp" />
+                android:layout_marginBottom="24dp" />
 
-        </androidx.cardview.widget.CardView>
+            <!-- Placeholder content -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/AppCardStyle">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Sports equipment and gear shopping coming soon..."
+                    style="@style/AppNormalTextStyle"
+                    android:textAlignment="center"
+                    android:padding="24dp" />
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
 
     </LinearLayout>
-
 </ScrollView>
