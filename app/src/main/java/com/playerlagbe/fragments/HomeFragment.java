@@ -23,6 +23,8 @@ import com.playerlagbe.AuthenticationActivity;
 import com.playerlagbe.ProfileActivity;
 import com.playerlagbe.CartActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import android.view.MenuInflater;
+import android.widget.PopupMenu;
 
 public class HomeFragment extends Fragment {
 
@@ -37,60 +39,53 @@ public class HomeFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        // Hamburger menu logic
+        // Hamburger menu logic using PopupMenu
         ImageView hamburgerMenuIcon = view.findViewById(R.id.hamburgerMenuIcon);
-        LinearLayout hamburgerMenuLayout = view.findViewById(R.id.hamburgerMenuLayout);
-        ImageView menuProfileIcon = view.findViewById(R.id.menuProfileIcon);
-        ImageView menuCartIcon = view.findViewById(R.id.menuCartIcon);
-        Switch menuThemeSwitch = view.findViewById(R.id.menuThemeSwitch);
-        Button menuLogoutButton = view.findViewById(R.id.menuLogoutButton);
-
         hamburgerMenuIcon.setOnClickListener(v -> {
-            if (hamburgerMenuLayout.getVisibility() == View.VISIBLE) {
-                hamburgerMenuLayout.setVisibility(View.GONE);
-            } else {
-                hamburgerMenuLayout.setVisibility(View.VISIBLE);
-            }
+            PopupMenu popup = new PopupMenu(requireContext(), hamburgerMenuIcon);
+            popup.getMenuInflater().inflate(R.menu.menu_hamburger, popup.getMenu());
+            // Set icons for menu items
+            popup.getMenu().findItem(R.id.menu_profile).setIcon(R.drawable.ic_profile);
+            popup.getMenu().findItem(R.id.menu_cart).setIcon(R.drawable.ic_cart);
+            popup.getMenu().findItem(R.id.menu_theme).setIcon(R.drawable.ic_theme_toggle);
+            popup.getMenu().findItem(R.id.menu_logout).setIcon(R.drawable.ic_logout);
+            // Set theme label
+            SharedPreferences prefs = requireContext().getSharedPreferences("settings", 0);
+            boolean isDarkMode = prefs.getBoolean("dark_mode", false);
+            popup.getMenu().findItem(R.id.menu_theme).setTitle(isDarkMode ? "Light Mode" : "Dark Mode");
+            popup.setOnMenuItemClickListener(item -> {
+                int id = item.getItemId();
+                if (id == R.id.menu_profile) {
+                    startActivity(new Intent(getActivity(), com.playerlagbe.ProfileActivity.class));
+                    return true;
+                } else if (id == R.id.menu_cart) {
+                    startActivity(new Intent(getActivity(), com.playerlagbe.CartActivity.class));
+                    return true;
+                } else if (id == R.id.menu_theme) {
+                    boolean dark = prefs.getBoolean("dark_mode", false);
+                    if (dark) {
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                        prefs.edit().putBoolean("dark_mode", false).apply();
+                    } else {
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                        prefs.edit().putBoolean("dark_mode", true).apply();
+                    }
+                    requireActivity().recreate();
+                    return true;
+                } else if (id == R.id.menu_logout) {
+                    com.playerlagbe.FirebaseAuthManager authManager = new com.playerlagbe.FirebaseAuthManager(requireContext());
+                    authManager.signOut();
+                    Intent intent = new Intent(getActivity(), com.playerlagbe.AuthenticationActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    requireActivity().finish();
+                    Toast.makeText(getActivity(), "Logged out", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+                return false;
+            });
+            popup.show();
         });
-
-        // Hide menu when clicking outside (optional, can be improved)
-        view.setOnClickListener(v -> {
-            if (hamburgerMenuLayout.getVisibility() == View.VISIBLE) {
-                hamburgerMenuLayout.setVisibility(View.GONE);
-            }
-        });
-
-        menuProfileIcon.setOnClickListener(v -> {
-            startActivity(new Intent(getActivity(), ProfileActivity.class));
-        });
-        menuCartIcon.setOnClickListener(v -> {
-            startActivity(new Intent(getActivity(), CartActivity.class));
-        });
-
-        // Theme toggle logic
-        SharedPreferences prefs = requireContext().getSharedPreferences("settings", 0);
-        boolean isDarkMode = prefs.getBoolean("dark_mode", false);
-        menuThemeSwitch.setChecked(isDarkMode);
-        menuThemeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            }
-            prefs.edit().putBoolean("dark_mode", isChecked).apply();
-        });
-
-        // Logout logic
-        menuLogoutButton.setOnClickListener(v -> {
-            FirebaseAuthManager authManager = new FirebaseAuthManager(requireContext());
-            authManager.signOut();
-            Intent intent = new Intent(getActivity(), AuthenticationActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            requireActivity().finish();
-            Toast.makeText(getActivity(), "Logged out", Toast.LENGTH_SHORT).show();
-        });
-
         return view;
     }
 }

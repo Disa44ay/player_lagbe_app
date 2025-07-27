@@ -15,34 +15,16 @@ import com.playerlagbe.fragments.ShopFragment;
 import com.playerlagbe.fragments.TeamsFragment;
 import androidx.appcompat.app.AppCompatDelegate;
 import android.content.SharedPreferences;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
     ImageView profileIcon, cartIcon, themeToggleIcon;
-    com.google.android.material.floatingactionbutton.FloatingActionButton fabProfile, fabCart, fabTheme, fabLogout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        fabProfile = findViewById(R.id.fabProfile);
-        fabCart = findViewById(R.id.fabCart);
-        fabTheme = findViewById(R.id.fabTheme);
-        fabLogout = findViewById(R.id.fabLogout);
-
-        fabProfile.setOnClickListener(v -> openProfile());
-        fabCart.setOnClickListener(v -> openCart());
-        fabTheme.setOnClickListener(v -> toggleTheme());
-        fabLogout.setOnClickListener(v -> {
-            FirebaseAuthManager authManager = new FirebaseAuthManager(this);
-            authManager.signOut();
-            Intent intent = new Intent(MainActivity.this, AuthenticationActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            finish();
-        });
 
         // Check if user is logged in
         FirebaseAuthManager authManager = new FirebaseAuthManager(this);
