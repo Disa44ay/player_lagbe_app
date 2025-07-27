@@ -13,11 +13,12 @@ import com.playerlagbe.fragments.HomeFragment;
 import com.playerlagbe.fragments.ManagerFragment;
 import com.playerlagbe.fragments.ShopFragment;
 import com.playerlagbe.fragments.TeamsFragment;
+import androidx.appcompat.app.AppCompatDelegate;
 
 public class MainActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
-    ImageView profileIcon, cartIcon;
+    ImageView profileIcon, cartIcon, themeToggleIcon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +29,11 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         profileIcon = findViewById(R.id.profileIcon);
         cartIcon = findViewById(R.id.cartIcon);
+        themeToggleIcon = findViewById(R.id.themeToggleIcon);
+
+        // Set initial icon state and click listener for theme toggle
+        updateThemeToggleIcon();
+        themeToggleIcon.setOnClickListener(v -> toggleTheme());
 
         // Set up click listeners for top bar icons
         profileIcon.setOnClickListener(v -> openProfile());
@@ -74,5 +80,47 @@ public class MainActivity extends AppCompatActivity {
     private void openCart() {
         Intent intent = new Intent(MainActivity.this, CartActivity.class);
         startActivity(intent);
+    }
+
+    private void toggleTheme() {
+        boolean isDarkMode = isDarkMode();
+        if (isDarkMode) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            saveThemePref(false);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            saveThemePref(true);
+        }
+        updateThemeToggleIcon();
+    }
+
+    private void updateThemeToggleIcon() {
+        boolean isDarkMode = isDarkMode();
+        if (themeToggleIcon != null) {
+            themeToggleIcon.setImageResource(isDarkMode ? R.drawable.ic_theme_toggle : R.drawable.ic_theme_toggle);
+            // Optionally, you can use different icons for light/dark
+        }
+    }
+
+    private boolean isDarkMode() {
+        return getSharedPreferences("settings", MODE_PRIVATE).getBoolean("dark_mode", false);
+    }
+
+    private void saveThemePref(boolean darkMode) {
+        getSharedPreferences("settings", MODE_PRIVATE).edit().putBoolean("dark_mode", darkMode).apply();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateThemeToggleIcon();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // Apply theme based on saved preference
+        boolean darkMode = isDarkMode();
+        AppCompatDelegate.setDefaultNightMode(darkMode ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
     }
 }
