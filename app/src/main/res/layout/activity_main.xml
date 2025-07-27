@@ -17,6 +17,55 @@
         android:layout_weight="1"
         android:background="@color/app_background" />
 
+    <!-- Floating Action Buttons -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_marginBottom="80dp"
+                android:layout_marginEnd="24dp">
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/fabProfile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_profile"
+                    android:contentDescription="Profile"
+                    app:backgroundTint="@color/app_red" />
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/fabCart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_cart"
+                    android:contentDescription="Cart"
+                    app:backgroundTint="@color/app_red"
+                    android:layout_marginTop="72dp" />
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/fabTheme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_theme_toggle"
+                    android:contentDescription="Theme Switch"
+                    app:backgroundTint="@color/app_red"
+                    android:layout_marginTop="144dp" />
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/fabLogout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_logout"
+                    android:contentDescription="Logout"
+                    app:backgroundTint="@color/app_red"
+                    android:layout_marginTop="216dp" />
+            </FrameLayout>
+        </FrameLayout>
+    </FrameLayout>
+
     <!-- Bottom Navigation Bar -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
