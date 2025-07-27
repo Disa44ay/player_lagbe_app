@@ -96,8 +96,10 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         public void onAuthSuccess(FirebaseUser user) {
             runOnUiThread(() -> {
                 setResetButtonEnabled(true);
-                showSuccessDialog("Email Sent!", 
-                        "A password reset link has been sent to your email address. Please check your inbox and follow the instructions to reset your password.");
+                showSuccessDialog("Password Reset Email Sent!", 
+                        "We've sent a password reset link to your email address.\n\n" +
+                        "Please check your inbox (and spam folder) and follow the instructions to reset your password.\n\n" +
+                        "The link will expire in 1 hour for security reasons.");
             });
         }
 
@@ -105,7 +107,22 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         public void onAuthFailure(String error) {
             runOnUiThread(() -> {
                 setResetButtonEnabled(true);
-                showError(error);
+                
+                // Provide more specific error messages
+                String userFriendlyError;
+                if (error.contains("user-not-found") || error.contains("User not found")) {
+                    userFriendlyError = "No account found with this email address. Please check the email or create a new account.";
+                } else if (error.contains("invalid-email") || error.contains("Invalid email")) {
+                    userFriendlyError = "Please enter a valid email address.";
+                } else if (error.contains("network") || error.contains("connection")) {
+                    userFriendlyError = "Network error. Please check your internet connection and try again.";
+                } else if (error.contains("too-many-requests")) {
+                    userFriendlyError = "Too many password reset attempts. Please wait a few minutes before trying again.";
+                } else {
+                    userFriendlyError = "Failed to send password reset email. " + error + "\n\nPlease try again or contact support.";
+                }
+                
+                showError(userFriendlyError);
             });
         }
 

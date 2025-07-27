@@ -22,7 +22,7 @@
             android:src="@drawable/ic_launcher_foreground"
             android:layout_marginBottom="24dp" />
 
-        <!-- Email Field -->
+        <!-- Email/Username Field -->
         <EditText
             android:id="@+id/email"
             android:layout_width="match_parent"
@@ -30,7 +30,7 @@
             android:hint="Email or Username"
             android:inputType="textEmailAddress"
             android:layout_marginBottom="16dp"
-            android:contentDescription="Enter your email or username" />
+            android:contentDescription="Enter your email address or username" />
 
         <!-- Password Field -->
         <EditText

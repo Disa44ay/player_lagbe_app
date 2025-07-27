@@ -143,9 +143,15 @@ public class AuthenticationActivity extends AppCompatActivity {
         // Disable login button during authentication
         setLoginButtonEnabled(false);
 
+        // Provide feedback based on input type
+        if (emailOrUsername.contains("@")) {
+            Toast.makeText(this, "Signing in with email...", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Looking up username and signing in...", Toast.LENGTH_SHORT).show();
+        }
+
         // Sign in with Firebase (supports both email and username)
         authManager.signIn(emailOrUsername, password, authListener);
-
     }
 
     /**

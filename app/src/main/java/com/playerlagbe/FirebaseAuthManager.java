@@ -75,8 +75,6 @@ public class FirebaseAuthManager {
                 .limit(1)
                 .get()
                 .addOnCompleteListener(task -> {
-                    listener.onAuthLoading(false);
-
                     if (task.isSuccessful()) {
                         Log.d("FIRESTORE", "Query successful. Documents found: " + task.getResult().size());
 
@@ -85,15 +83,28 @@ public class FirebaseAuthManager {
                             Log.d("FIRESTORE", "User document: " + doc.getData());
                             String email = doc.getString("email");
                             Log.d("FIRESTORE", "Extracted email: " + email);
-                            callback.onFetched(email);
+                            if (email != null && !email.isEmpty()) {
+                                // Start loading for the actual email login
+                                listener.onAuthLoading(true);
+                                callback.onFetched(email);
+                            } else {
+                                listener.onAuthLoading(false);
+                                listener.onAuthFailure("Email not found for username: " + username);
+                            }
                         } else {
                             Log.w("FIRESTORE", "No user found with username: " + username);
-                            listener.onAuthFailure("Username not found");
+                            listener.onAuthLoading(false);
+                            listener.onAuthFailure("Username '" + username + "' not found. Please check spelling or use your email to login.");
                         }
                     } else {
                         Exception e = task.getException();
                         Log.e("FIRESTORE", "Firestore query failed", e);
-                        listener.onAuthFailure("Failed to fetch username");
+                        listener.onAuthLoading(false);
+                        if (e != null && e.getMessage() != null && e.getMessage().contains("PERMISSION_DENIED")) {
+                            listener.onAuthFailure("Unable to verify username. Please try logging in with your email address instead.");
+                        } else {
+                            listener.onAuthFailure("Connection error. Please check your internet and try again.");
+                        }
                     }
                 });
     }
