@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:orientation="horizontal"
-        android:background="@color/app_background"
+        android:background="@color/card_background"
         android:elevation="2dp"
         android:gravity="center_vertical"
         android:paddingStart="16dp"
@@ -47,6 +47,17 @@
             android:layout_height="32dp"
             android:src="@drawable/ic_cart"
             android:contentDescription="Cart"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <!-- Theme Toggle Icon -->
+        <ImageView
+            android:id="@+id/themeToggleIcon"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_theme_toggle"
+            android:contentDescription="Toggle Light/Dark Mode"
             android:background="?android:attr/selectableItemBackgroundBorderless"
             android:clickable="true"
             android:focusable="true" />
@@ -144,11 +155,11 @@
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="@color/app_background"
+        android:background="@color/card_background"
         app:menu="@menu/bottom_nav_menu"
-        app:itemIconTint="@color/black"
-        app:itemTextColor="@color/black"
-        app:itemRippleColor="@color/light_grey"
+        app:itemIconTint="@color/icon_color"
+        app:itemTextColor="@color/app_text_primary"
+        app:itemRippleColor="@color/medium_grey"
         app:elevation="2dp" />
 
 </LinearLayout>
