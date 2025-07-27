@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.playerlagbe">
 
-    <!-- Internet permission for Firebase Authentication -->
+    <!-- Internet permission (still needed for future features) -->
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -13,8 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.playerlagbe">
 
-        <!-- Launcher Activity -->
-        <activity android:name=".LauncherActivity"
+        <!-- Main Activity (Default Launcher) -->
+        <activity 
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,21 +23,47 @@
             </intent-filter>
         </activity>
 
-        <!-- Authentication Activity -->
-        <activity android:name=".AuthenticationActivity"
-            android:exported="true" />
+        <!-- Teams Activity -->
+        <activity 
+            android:name=".TeamsActivity"
+            android:exported="false" />
 
-        <!-- Signup Activity -->
-        <activity android:name=".SignupActivity"
-            android:exported="true" />
+        <!-- Shop Activity -->
+        <activity 
+            android:name=".ShopActivity"
+            android:exported="false" />
 
-        <!-- Forgot Password Activity -->
-        <activity android:name=".ForgotPasswordActivity"
-            android:exported="true" />
+        <!-- Manager Activity -->
+        <activity 
+            android:name=".ManagerActivity"
+            android:exported="false" />
 
-        <!-- Main Activity (Home screen) -->
-        <activity android:name=".MainActivity"
-            android:exported="true" />
+        <!-- Profile Activity -->
+        <activity 
+            android:name=".ProfileActivity"
+            android:exported="false" />
+
+        <!-- Cart Activity -->
+        <activity 
+            android:name=".CartActivity"
+            android:exported="false" />
+
+        <!-- Authentication Activities (kept for future use) -->
+        <activity 
+            android:name=".LauncherActivity"
+            android:exported="false" />
+
+        <activity 
+            android:name=".AuthenticationActivity"
+            android:exported="false" />
+
+        <activity 
+            android:name=".SignupActivity"
+            android:exported="false" />
+
+        <activity 
+            android:name=".ForgotPasswordActivity"
+            android:exported="false" />
 
     </application>
 

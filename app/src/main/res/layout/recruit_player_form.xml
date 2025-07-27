@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    style="@style/AppCardStyle">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Form Title -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Recruit Player"
+            style="@style/AppTitleTextStyle"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Field Name -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Field Name"
+            style="@style/AppNormalTextStyle"
+            android:layout_marginBottom="4dp" />
+
+        <EditText
+            android:id="@+id/etFieldName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter field name"
+            style="@style/AppEditTextStyle"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Date -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date"
+            style="@style/AppNormalTextStyle"
+            android:layout_marginBottom="4dp" />
+
+        <EditText
+            android:id="@+id/etDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Select date"
+            android:inputType="date"
+            style="@style/AppEditTextStyle"
+            android:layout_marginBottom="12dp"
+            android:clickable="true"
+            android:focusable="false" />
+
+        <!-- Time From-To -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Time"
+            style="@style/AppNormalTextStyle"
+            android:layout_marginBottom="4dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp">
+
+            <EditText
+                android:id="@+id/etTimeFrom"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="From"
+                android:inputType="time"
+                style="@style/AppEditTextStyle"
+                android:layout_marginEnd="8dp"
+                android:clickable="true"
+                android:focusable="false" />
+
+            <EditText
+                android:id="@+id/etTimeTo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="To"
+                android:inputType="time"
+                style="@style/AppEditTextStyle"
+                android:layout_marginStart="8dp"
+                android:clickable="true"
+                android:focusable="false" />
+
+        </LinearLayout>
+
+        <!-- Fee per person -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fee (per person)"
+            style="@style/AppNormalTextStyle"
+            android:layout_marginBottom="4dp" />
+
+        <EditText
+            android:id="@+id/etFee"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter fee amount"
+            android:inputType="numberDecimal"
+            style="@style/AppEditTextStyle"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Number of players -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No. of players"
+            style="@style/AppNormalTextStyle"
+            android:layout_marginBottom="4dp" />
+
+        <EditText
+            android:id="@+id/etNumberOfPlayers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Number of players needed"
+            android:inputType="number"
+            style="@style/AppEditTextStyle"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Contact -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Contact"
+            style="@style/AppNormalTextStyle"
+            android:layout_marginBottom="4dp" />
+
+        <EditText
+            android:id="@+id/etContact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Phone number or email"
+            android:inputType="text"
+            style="@style/AppEditTextStyle"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Submit Button -->
+        <Button
+            android:id="@+id/btnRecruit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Recruit"
+            style="@style/AppButtonStyle" />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

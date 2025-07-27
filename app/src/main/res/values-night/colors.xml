@@ -1,24 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Clean Minimal Dark Theme Colors -->
+    <!-- Keep same clean design for night mode - no dark theme as specified -->
     
-    <!-- Theme Colors for Dark Mode -->
-    <color name="colorPrimary">@color/red_accent</color>
-    <color name="colorPrimaryVariant">@color/red_accent</color>
-    <color name="colorOnPrimary">@color/white</color>
-    <color name="colorSecondary">@color/red_accent</color>
-    <color name="colorSecondaryVariant">@color/red_accent</color>
-    <color name="colorOnSecondary">@color/white</color>
+    <!-- Override to maintain white background and black text -->
+    <color name="app_background">@color/white</color>
+    <color name="app_text_primary">@color/black</color>
+    <color name="app_text_secondary">#666666</color>
+    <color name="app_text_hint">#999999</color>
     
-    <!-- Background and Surface Colors for Dark Mode -->
-    <color name="colorBackground">@color/black</color>
-    <color name="colorSurface">#121212</color>
-    <color name="colorOnBackground">@color/white</color>
-    <color name="colorOnSurface">@color/white</color>
+    <!-- Button Colors remain the same -->
+    <color name="button_background">@color/light_grey</color>
+    <color name="button_pressed">@color/medium_grey</color>
+    <color name="button_text">@color/black</color>
     
-    <!-- Input Field Colors for Dark Mode -->
-    <color name="input_background">#222222</color>
-    <color name="input_text_color">@color/white</color>
-    <color name="input_hint_color">#B0B0B0</color>
-    <color name="input_border_color">#666666</color>
+    <!-- Input Field Colors remain the same -->
+    <color name="input_background">@color/white</color>
+    <color name="input_border">@color/border_grey</color>
+    <color name="input_text">@color/black</color>
+    <color name="input_hint">@color/app_text_hint</color>
+    
+    <!-- Material colors to maintain consistency -->
+    <color name="colorBackground">@color/white</color>
+    <color name="colorSurface">@color/white</color>
+    <color name="colorOnBackground">@color/black</color>
+    <color name="colorOnSurface">@color/black</color>
 </resources>
