@@ -6,27 +6,18 @@
     android:orientation="vertical"
     android:background="@color/app_background">
 
-    <!-- Toolbar (optional, can be replaced with fragment toolbar) -->
-    <!-- <include layout="@layout/toolbar" /> -->
+    <!-- Top Bar -->
+    <include layout="@layout/fragments/top_bar" />
 
-    <!-- Main Content Container for Fragments -->
+    <!-- Main Content Container for Activities -->
     <FrameLayout
-        android:id="@+id/fragmentContainer"
+        android:id="@+id/activityContainer"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:background="@color/app_background" />
 
     <!-- Bottom Navigation Bar -->
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigationView"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="@color/card_background"
-        app:menu="@menu/bottom_nav_menu"
-        app:itemIconTint="@color/icon_color"
-        app:itemTextColor="@color/app_text_primary"
-        app:itemRippleColor="@color/medium_grey"
-        app:elevation="2dp" />
+    <include layout="@layout/fragments/bottom_nav_bar" />
 
 </LinearLayout>
