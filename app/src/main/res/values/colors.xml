@@ -35,6 +35,9 @@
     <!-- Status Bar -->
     <color name="status_bar">#FAFAFA</color>
 
+    <!-- Bottom Navigation Colors -->
+    <color name="bottom_nav_item_color">#C62828</color>
+
     <!-- Material Colors -->
     <color name="colorPrimary">#C62828</color>
     <color name="colorPrimaryVariant">#B71C1C</color>
