@@ -20,6 +20,18 @@
         style="@style/AppTitleTextStyle"
         android:gravity="start|center_vertical" />
 
+    <!-- Cart Icon -->
+    <ImageView
+        android:id="@+id/cartIcon"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:src="@drawable/ic_cart"
+        android:contentDescription="Cart"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_marginEnd="8dp" />
+
     <!-- Hamburger Menu Icon -->
     <ImageView
         android:id="@+id/hamburgerMenuIcon"
