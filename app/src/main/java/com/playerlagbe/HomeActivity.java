@@ -23,7 +23,7 @@ import com.playerlagbe.fragments.ManagerFragment;
 import com.playerlagbe.fragments.ShopFragment;
 import com.playerlagbe.fragments.TeamsFragment;
 
-public class ManagerActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
     ImageView profileIcon, cartIcon, themeToggleIcon;
@@ -31,12 +31,12 @@ public class ManagerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_manager_shared);
+        setContentView(R.layout.activity_home);
 
         // Check if user is logged in
         FirebaseAuthManager authManager = new FirebaseAuthManager(this);
         if (!authManager.isUserSignedIn()) {
-            Intent intent = new Intent(ManagerActivity.this, AuthenticationActivity.class);
+            Intent intent = new Intent(HomeActivity.this, AuthenticationActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
@@ -45,7 +45,7 @@ public class ManagerActivity extends AppCompatActivity {
 
         // Initialize bottom navigation
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
-        openFragment(new ManagerFragment()); // Default fragment
+        openFragment(new HomeContentFragment()); // Default fragment
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
             Fragment selectedFragment = null;
@@ -123,12 +123,12 @@ public class ManagerActivity extends AppCompatActivity {
     }
 
     private void openProfile() {
-        Intent intent = new Intent(ManagerActivity.this, ProfileActivity.class);
+        Intent intent = new Intent(HomeActivity.this, ProfileActivity.class);
         startActivity(intent);
     }
 
     private void openCart() {
-        Intent intent = new Intent(ManagerActivity.this, CartActivity.class);
+        Intent intent = new Intent(HomeActivity.this, CartActivity.class);
         startActivity(intent);
     }
 

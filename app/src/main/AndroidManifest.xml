@@ -23,6 +23,11 @@
             </intent-filter>
         </activity>
 
+        <!-- Home Activity -->
+        <activity 
+            android:name=".HomeActivity"
+            android:exported="false" />
+
         <!-- Teams Activity -->
         <activity 
             android:name=".TeamsActivity"
