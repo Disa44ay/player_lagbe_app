@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.playerlagbe">
 
-        <!-- Main Activity (Default Launcher) -->
+        <!-- Main Activity (Default Launcher) - Now serves as Fragment Container -->
         <activity 
             android:name=".MainActivity"
             android:exported="true">
@@ -23,37 +23,7 @@
             </intent-filter>
         </activity>
 
-        <!-- Home Activity -->
-        <activity 
-            android:name=".HomeActivity"
-            android:exported="false" />
-
-        <!-- Teams Activity -->
-        <activity 
-            android:name=".TeamsActivity"
-            android:exported="false" />
-
-        <!-- Shop Activity -->
-        <activity 
-            android:name=".ShopActivity"
-            android:exported="false" />
-
-        <!-- Manager Activity -->
-        <activity 
-            android:name=".ManagerActivity"
-            android:exported="false" />
-
-        <!-- Profile Activity -->
-        <activity 
-            android:name=".ProfileActivity"
-            android:exported="false" />
-
-        <!-- Cart Activity -->
-        <activity 
-            android:name=".CartActivity"
-            android:exported="false" />
-
-        <!-- Authentication Activities (kept for future use) -->
+        <!-- Authentication Activities (kept for authentication flow) -->
         <activity 
             android:name=".LauncherActivity"
             android:exported="false" />

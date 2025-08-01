@@ -18,8 +18,7 @@
     <!-- Main Content -->
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="match_parent"
         android:fillViewport="true">
 
         <LinearLayout
@@ -77,17 +76,5 @@
 
         </LinearLayout>
     </ScrollView>
-
-    <!-- Bottom Navigation Bar -->
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigationView"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="@color/card_background"
-        app:menu="@menu/bottom_nav_menu"
-        app:itemIconTint="@color/icon_color"
-        app:itemTextColor="@color/app_text_primary"
-        app:itemRippleColor="@color/medium_grey"
-        app:elevation="2dp" />
 
 </LinearLayout>

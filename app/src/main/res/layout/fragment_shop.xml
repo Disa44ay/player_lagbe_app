@@ -18,8 +18,7 @@
     <!-- Main Content -->
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="match_parent"
         android:fillViewport="true">
 
         <LinearLayout
@@ -32,14 +31,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Manager"
+                android:text="Shop"
                 style="@style/AppTitleTextStyle"
                 android:layout_marginBottom="16dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Manager functionality will be implemented here"
+                android:text="Shop functionality will be implemented here"
                 style="@style/AppNormalTextStyle"
                 android:textAlignment="center"
                 android:layout_marginBottom="24dp" />
@@ -53,7 +52,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Team management and administrative features coming soon..."
+                    android:text="Sports equipment and gear shopping coming soon..."
                     style="@style/AppNormalTextStyle"
                     android:textAlignment="center"
                     android:padding="24dp" />
@@ -62,17 +61,5 @@
 
         </LinearLayout>
     </ScrollView>
-
-    <!-- Bottom Navigation Bar -->
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigationView"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="@color/card_background"
-        app:menu="@menu/bottom_nav_menu"
-        app:itemIconTint="@color/icon_color"
-        app:itemTextColor="@color/app_text_primary"
-        app:itemRippleColor="@color/medium_grey"
-        app:elevation="2dp" />
 
 </LinearLayout>
