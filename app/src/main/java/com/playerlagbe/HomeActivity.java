@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.appcompat.app.AppCompatDelegate;
 import android.content.SharedPreferences;
 import android.view.MenuItem;
@@ -18,10 +17,6 @@ import android.view.MenuInflater;
 import android.widget.PopupMenu;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.playerlagbe.fragments.HomeContentFragment;
-import com.playerlagbe.fragments.ManagerFragment;
-import com.playerlagbe.fragments.ShopFragment;
-import com.playerlagbe.fragments.TeamsFragment;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -45,22 +40,24 @@ public class HomeActivity extends AppCompatActivity {
 
         // Initialize bottom navigation
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
-        openFragment(new HomeContentFragment()); // Default fragment
+        bottomNavigationView.setSelectedItemId(R.id.nav_home); // Set home as selected
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
-            Fragment selectedFragment = null;
             int itemId = item.getItemId();
             if (itemId == R.id.nav_home) {
-                selectedFragment = new HomeContentFragment();
+                // Already on home, do nothing
+                return true;
             } else if (itemId == R.id.nav_teams) {
-                selectedFragment = new TeamsFragment();
+                startActivity(new Intent(this, TeamsActivity.class));
+                finish();
+                return true;
             } else if (itemId == R.id.nav_shop) {
-                selectedFragment = new ShopFragment();
+                startActivity(new Intent(this, ShopActivity.class));
+                finish();
+                return true;
             } else if (itemId == R.id.nav_manager) {
-                selectedFragment = new ManagerFragment();
-            }
-            if (selectedFragment != null) {
-                openFragment(selectedFragment);
+                startActivity(new Intent(this, ManagerActivity.class));
+                finish();
                 return true;
             }
             return false;
@@ -113,13 +110,6 @@ public class HomeActivity extends AppCompatActivity {
             });
             popup.show();
         });
-    }
-
-    private void openFragment(Fragment fragment) {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragmentContainer, fragment)
-                .commit();
     }
 
     private void openProfile() {

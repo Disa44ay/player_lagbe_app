@@ -15,13 +15,53 @@
         android:layout_height="1dp"
         android:background="@color/divider_color" />
 
-    <!-- Main Content Container for Fragments -->
-    <FrameLayout
-        android:id="@+id/fragmentContainer"
+    <!-- Main Content -->
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/app_background" />
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Shop"
+                style="@style/AppTitleTextStyle"
+                android:layout_marginBottom="16dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Shop functionality will be implemented here"
+                style="@style/AppNormalTextStyle"
+                android:textAlignment="center"
+                android:layout_marginBottom="24dp" />
+
+            <!-- Placeholder content -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/AppCardStyle">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Sports equipment and gear shopping coming soon..."
+                    style="@style/AppNormalTextStyle"
+                    android:textAlignment="center"
+                    android:padding="24dp" />
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+    </ScrollView>
 
     <!-- Bottom Navigation Bar -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
