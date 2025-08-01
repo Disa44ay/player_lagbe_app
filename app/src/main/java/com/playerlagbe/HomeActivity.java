@@ -3,6 +3,7 @@ package com.playerlagbe;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
@@ -10,12 +11,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class ShopActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_shop);
+        setContentView(R.layout.activity_home);
 
         // Set up hamburger menu
         setupHamburgerMenu();
@@ -45,10 +46,10 @@ public class ShopActivity extends AppCompatActivity {
                 popup.setOnMenuItemClickListener(item -> {
                     int id = item.getItemId();
                     if (id == R.id.menu_profile) {
-                        startActivity(new Intent(ShopActivity.this, ProfileActivity.class));
+                        startActivity(new Intent(HomeActivity.this, ProfileActivity.class));
                         return true;
                     } else if (id == R.id.menu_cart) {
-                        startActivity(new Intent(ShopActivity.this, CartActivity.class));
+                        startActivity(new Intent(HomeActivity.this, CartActivity.class));
                         return true;
                     } else if (id == R.id.menu_theme) {
                         boolean dark = prefs.getBoolean("dark_mode", false);
@@ -64,7 +65,7 @@ public class ShopActivity extends AppCompatActivity {
                     } else if (id == R.id.menu_logout) {
                         FirebaseAuthManager authManager = new FirebaseAuthManager(this);
                         authManager.signOut();
-                        Intent intent = new Intent(ShopActivity.this, AuthenticationActivity.class);
+                        Intent intent = new Intent(HomeActivity.this, AuthenticationActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                         finish();
@@ -81,26 +82,26 @@ public class ShopActivity extends AppCompatActivity {
     private void setupBottomNavigation() {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         if (bottomNavigationView != null) {
-            // Set the shop item as selected
-            bottomNavigationView.setSelectedItemId(R.id.nav_shop);
+            // Set the home item as selected
+            bottomNavigationView.setSelectedItemId(R.id.nav_home);
             
             bottomNavigationView.setOnItemSelectedListener(item -> {
                 int itemId = item.getItemId();
                 if (itemId == R.id.nav_home) {
-                    Intent intent = new Intent(ShopActivity.this, HomeActivity.class);
-                    startActivity(intent);
-                    finish();
+                    // Already on home, do nothing
                     return true;
                 } else if (itemId == R.id.nav_teams) {
-                    Intent intent = new Intent(ShopActivity.this, TeamsActivity.class);
+                    Intent intent = new Intent(HomeActivity.this, TeamsActivity.class);
                     startActivity(intent);
                     finish();
                     return true;
                 } else if (itemId == R.id.nav_shop) {
-                    // Already on shop, do nothing
+                    Intent intent = new Intent(HomeActivity.this, ShopActivity.class);
+                    startActivity(intent);
+                    finish();
                     return true;
                 } else if (itemId == R.id.nav_manager) {
-                    Intent intent = new Intent(ShopActivity.this, ManagerActivity.class);
+                    Intent intent = new Intent(HomeActivity.this, ManagerActivity.class);
                     startActivity(intent);
                     finish();
                     return true;
