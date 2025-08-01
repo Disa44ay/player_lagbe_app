@@ -3,9 +3,6 @@ package com.playerlagbe;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.MenuInflater;
-import android.widget.ImageView;
-import android.widget.PopupMenu;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -34,13 +31,9 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        // Initialize fragment manager
         fragmentManager = getSupportFragmentManager();
-
-        // Initialize bottom navigation
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         
-        // Set up bottom navigation listener
         bottomNavigationView.setOnItemSelectedListener(item -> {
             Fragment selectedFragment = null;
             int itemId = item.getItemId();
@@ -56,14 +49,11 @@ public class MainActivity extends AppCompatActivity {
             }
             
             if (selectedFragment != null) {
-                loadFragment(selectedFragment);
+                loadFragment(selectedFragment, false);
                 return true;
             }
             return false;
         });
-
-        // Set up hamburger menu (will be handled by individual fragments but we can centralize logout/theme)
-        setupHamburgerMenu();
 
         // Load default fragment (Home) if this is the first time
         if (savedInstanceState == null) {
@@ -71,22 +61,20 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void loadFragment(Fragment fragment) {
+    private void loadFragment(Fragment fragment, boolean addToBackStack) {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.fragmentContainer, fragment);
+        if (addToBackStack) {
+            transaction.addToBackStack(null);
+        }
         transaction.commit();
     }
 
-    private void setupHamburgerMenu() {
-        // This will be called by fragments, but we can handle global actions
-    }
-
-    // Method to handle hamburger menu actions from fragments
     public void handleHamburgerMenuAction(int actionId) {
         if (actionId == R.id.menu_profile) {
-            loadFragment(new ProfileFragment());
+            loadFragment(new ProfileFragment(), true);
         } else if (actionId == R.id.menu_cart) {
-            loadFragment(new CartFragment());
+            loadFragment(new CartFragment(), true);
         } else if (actionId == R.id.menu_theme) {
             toggleTheme();
         } else if (actionId == R.id.menu_logout) {
@@ -120,7 +108,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        // Apply theme based on saved preference
         SharedPreferences prefs = getSharedPreferences("settings", MODE_PRIVATE);
         boolean darkMode = prefs.getBoolean("dark_mode", false);
         AppCompatDelegate.setDefaultNightMode(darkMode ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);

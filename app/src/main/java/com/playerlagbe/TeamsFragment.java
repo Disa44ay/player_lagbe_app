@@ -25,7 +25,6 @@ public class TeamsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        
         setupHamburgerMenu();
     }
 
@@ -36,13 +35,11 @@ public class TeamsFragment extends Fragment {
                 PopupMenu popup = new PopupMenu(getContext(), hamburgerMenuIcon);
                 popup.getMenuInflater().inflate(R.menu.menu_hamburger, popup.getMenu());
                 
-                // Set icons for menu items
                 popup.getMenu().findItem(R.id.menu_profile).setIcon(R.drawable.ic_profile);
                 popup.getMenu().findItem(R.id.menu_cart).setIcon(R.drawable.ic_cart);
                 popup.getMenu().findItem(R.id.menu_theme).setIcon(R.drawable.ic_theme_toggle);
                 popup.getMenu().findItem(R.id.menu_logout).setIcon(R.drawable.ic_logout);
                 
-                // Set theme label
                 SharedPreferences prefs = getContext().getSharedPreferences("settings", 0);
                 boolean isDarkMode = prefs.getBoolean("dark_mode", false);
                 popup.getMenu().findItem(R.id.menu_theme).setTitle(isDarkMode ? "Light Mode" : "Dark Mode");
