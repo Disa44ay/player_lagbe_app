@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,7 +34,6 @@ import com.google.firebase.auth.FirebaseUser;
 public class AuthenticationActivity extends AppCompatActivity {
 
     private EditText emailInput, passwordInput;
-    private RadioGroup roleGroup;
     private Button loginButton, googleSignInButton;
     private TextView forgotPasswordText, signupRedirectText;
     private ProgressBar progressBar;
@@ -68,7 +66,6 @@ public class AuthenticationActivity extends AppCompatActivity {
     private void initializeViews() {
         emailInput = findViewById(R.id.email);
         passwordInput = findViewById(R.id.password);
-        roleGroup = findViewById(R.id.roleGroup);
         loginButton = findViewById(R.id.loginButton);
         googleSignInButton = findViewById(R.id.googleSignIn);
         forgotPasswordText = findViewById(R.id.forgotPassword);
@@ -173,9 +170,6 @@ public class AuthenticationActivity extends AppCompatActivity {
                 setLoginButtonEnabled(true);
                 
                 if (user != null) {
-                    // Get selected role (optional)
-                    String role = getSelectedRole();
-                    
                     String welcomeName = user.getDisplayName() != null ? user.getDisplayName() : 
                                         (user.getEmail() != null ? user.getEmail().split("@")[0] : "User");
                     Toast.makeText(AuthenticationActivity.this, 
@@ -214,16 +208,7 @@ public class AuthenticationActivity extends AppCompatActivity {
         }
     };
 
-    /**
-     * Get the selected role from RadioGroup
-     */
-    private String getSelectedRole() {
-        int selectedRoleId = roleGroup.getCheckedRadioButtonId();
-        if (selectedRoleId == R.id.radioAdmin) {
-            return "Admin";
-        }
-        return "User";
-    }
+
 
     /**
      * Enable/disable login buttons

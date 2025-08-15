@@ -9,6 +9,19 @@
     <item
         android:id="@+id/menu_theme"
         android:title="Toggle Theme" />
+    <!-- Admin-only menu items -->
+    <item
+        android:id="@+id/menu_manage_team"
+        android:title="Manage Team"
+        android:visible="false" />
+    <item
+        android:id="@+id/menu_manage_shop"
+        android:title="Manage Shop"
+        android:visible="false" />
+    <item
+        android:id="@+id/menu_manage_orders"
+        android:title="Manage Orders"
+        android:visible="false" />
     <item
         android:id="@+id/menu_logout"
         android:title="Logout" />

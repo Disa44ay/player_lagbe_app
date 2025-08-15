@@ -40,6 +40,19 @@
             android:name=".ForgotPasswordActivity"
             android:exported="false" />
 
+        <!-- Admin Activities -->
+        <activity 
+            android:name=".ManageShopActivity"
+            android:exported="false" />
+
+        <activity 
+            android:name=".ManageTeamActivity"
+            android:exported="false" />
+
+        <activity 
+            android:name=".ManageOrdersActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>

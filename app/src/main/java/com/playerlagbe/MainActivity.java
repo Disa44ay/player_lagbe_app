@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
     private FragmentManager fragmentManager;
+    private boolean isAdmin = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +60,9 @@ public class MainActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             bottomNavigationView.setSelectedItemId(R.id.nav_home);
         }
+
+        // Check admin status
+        checkAdminStatus();
     }
 
     private void loadFragment(Fragment fragment, boolean addToBackStack) {
@@ -77,6 +81,12 @@ public class MainActivity extends AppCompatActivity {
             loadFragment(new CartFragment(), true);
         } else if (actionId == R.id.menu_theme) {
             toggleTheme();
+        } else if (actionId == R.id.menu_manage_team) {
+            startActivity(new Intent(this, ManageTeamActivity.class));
+        } else if (actionId == R.id.menu_manage_shop) {
+            startActivity(new Intent(this, ManageShopActivity.class));
+        } else if (actionId == R.id.menu_manage_orders) {
+            startActivity(new Intent(this, ManageOrdersActivity.class));
         } else if (actionId == R.id.menu_logout) {
             logout();
         }
@@ -111,5 +121,26 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences("settings", MODE_PRIVATE);
         boolean darkMode = prefs.getBoolean("dark_mode", false);
         AppCompatDelegate.setDefaultNightMode(darkMode ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
+    }
+
+    private void checkAdminStatus() {
+        FirebaseAuthManager authManager = new FirebaseAuthManager(this);
+        authManager.checkAdminStatus(new FirebaseAuthManager.AdminCheckListener() {
+            @Override
+            public void onAdminCheckResult(boolean isAdminUser) {
+                isAdmin = isAdminUser;
+            }
+
+            @Override
+            public void onAdminCheckError(String error) {
+                // If there's an error, default to non-admin
+                isAdmin = false;
+                Toast.makeText(MainActivity.this, "Could not verify admin status", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public boolean isUserAdmin() {
+        return isAdmin;
     }
 }

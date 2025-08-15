@@ -42,31 +42,7 @@
             android:layout_marginBottom="16dp"
             android:contentDescription="Enter your password" />
 
-        <!-- Role Selection (Radio Buttons) -->
-        <RadioGroup
-            android:id="@+id/roleGroup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="16dp"
-            android:gravity="center">
 
-            <RadioButton
-                android:id="@+id/radioUser"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="User"
-                android:checked="true"
-                android:textColor="?android:attr/textColorPrimary" />
-
-            <RadioButton
-                android:id="@+id/radioAdmin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Admin"
-                android:layout_marginStart="32dp"
-                android:textColor="?android:attr/textColorPrimary" />
-        </RadioGroup>
 
         <!-- Login Button -->
         <Button

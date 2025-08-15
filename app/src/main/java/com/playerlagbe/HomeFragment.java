@@ -44,8 +44,16 @@ public class HomeFragment extends Fragment {
                 boolean isDarkMode = prefs.getBoolean("dark_mode", false);
                 popup.getMenu().findItem(R.id.menu_theme).setTitle(isDarkMode ? "Light Mode" : "Dark Mode");
                 
+                // Show/hide admin menu items based on user status
+                MainActivity mainActivity = (MainActivity) getActivity();
+                if (mainActivity != null) {
+                    boolean isAdmin = mainActivity.isUserAdmin();
+                    popup.getMenu().findItem(R.id.menu_manage_team).setVisible(isAdmin);
+                    popup.getMenu().findItem(R.id.menu_manage_shop).setVisible(isAdmin);
+                    popup.getMenu().findItem(R.id.menu_manage_orders).setVisible(isAdmin);
+                }
+                
                 popup.setOnMenuItemClickListener(item -> {
-                    MainActivity mainActivity = (MainActivity) getActivity();
                     if (mainActivity != null) {
                         mainActivity.handleHamburgerMenuAction(item.getItemId());
                     }

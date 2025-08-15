@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Product Name -->
+        <EditText
+            android:id="@+id/editProductName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Product Name (Required)"
+            android:inputType="textCapSentences"
+            android:layout_marginBottom="16dp"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textColorHint="?android:attr/textColorHint" />
+
+        <!-- Image Link -->
+        <EditText
+            android:id="@+id/editImageLink"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Image Link (Optional)"
+            android:inputType="textUri"
+            android:layout_marginBottom="16dp"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textColorHint="?android:attr/textColorHint" />
+
+        <!-- Product Details -->
+        <EditText
+            android:id="@+id/editProductDetails"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:hint="Product Details (Required)"
+            android:inputType="textMultiLine|textCapSentences"
+            android:gravity="top|start"
+            android:layout_marginBottom="16dp"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textColorHint="?android:attr/textColorHint" />
+
+        <!-- Price -->
+        <EditText
+            android:id="@+id/editPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Price (Required)"
+            android:inputType="numberDecimal"
+            android:layout_marginBottom="16dp"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textColorHint="?android:attr/textColorHint" />
+
+        <!-- Featured Radio Group -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Featured Product:"
+            android:textColor="?android:attr/textColorPrimary"
+            android:layout_marginBottom="8dp" />
+
+        <RadioGroup
+            android:id="@+id/editFeaturedGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
+
+            <RadioButton
+                android:id="@+id/editRadioFeaturedYes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yes"
+                android:textColor="?android:attr/textColorPrimary" />
+
+            <RadioButton
+                android:id="@+id/editRadioFeaturedNo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No"
+                android:checked="true"
+                android:layout_marginStart="32dp"
+                android:textColor="?android:attr/textColorPrimary" />
+
+        </RadioGroup>
+
+    </LinearLayout>
+
+</ScrollView>

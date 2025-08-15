@@ -31,6 +31,11 @@ public class FirebaseAuthManager {
         void onAuthLoading(boolean isLoading);
     }
 
+    public interface AdminCheckListener {
+        void onAdminCheckResult(boolean isAdmin);
+        void onAdminCheckError(String error);
+    }
+
     public FirebaseAuthManager(Context context) {
         this.context = context;
         mAuth = FirebaseAuth.getInstance();
@@ -207,6 +212,31 @@ public class FirebaseAuthManager {
     public void signOut() {
         mAuth.signOut();
         mGoogleSignInClient.signOut();
+    }
+
+    public void checkAdminStatus(AdminCheckListener listener) {
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null) {
+            listener.onAdminCheckError("User not authenticated");
+            return;
+        }
+
+        mFirestore.collection("users")
+                .document(currentUser.getUid())
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        Boolean isAdmin = documentSnapshot.getBoolean("admin");
+                        listener.onAdminCheckResult(isAdmin != null && isAdmin);
+                    } else {
+                        // User document doesn't exist, treat as non-admin
+                        listener.onAdminCheckResult(false);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Error checking admin status", e);
+                    listener.onAdminCheckError("Failed to check admin status: " + e.getMessage());
+                });
     }
 
     private String getAuthErrorMessage(Exception e) {
